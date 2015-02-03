@@ -7,9 +7,9 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 if Rails.env.development?
-  alice = User.create!(name: "Alice", host: "alice.pants.dev")
-  bob   = User.create!(name: "Bob",   host: "bob.pants.dev")
-  localhost = User.create!(name: "The Host of Local",   host: "localhost")
+  alice = User.local.create!(name: "Alice", host: "alice.pants.dev")
+  bob   = User.local.create!(name: "Bob",   host: "bob.pants.dev")
+  localhost = User.local.create!(name: "The Host of Local",   host: "localhost")
 
   FactoryGirl.create :post,
     user: alice,
