@@ -25,6 +25,14 @@ class Post < ActiveRecord::Base
     end
   end
 
+  validate :validate_url_matches_host
+
+  def validate_url_matches_host
+    if url && user && URI(url).host != user.host
+      errors.add(:url, "doesn't match user's host")
+    end
+  end
+
   def generate_html
     Formatter.new(body).complete.to_s
   end
