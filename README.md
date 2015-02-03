@@ -7,6 +7,10 @@ Pants Phase 2: A clean IndieWeb implementation of Pants.
 * Open-Source from day 1
 * Use simple and open protocols
 
+### Deploy on Heroku
+
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
 ### Interesting Links
 
 * [Webmention](http://webmention.org)

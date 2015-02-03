@@ -1,0 +1,15 @@
+{
+  "name": "IndiePants",
+  "description": "Taking back the web one HTTP request at a time.",
+  "repository": "https://github.com/hmans/indiepants",
+  "keywords": ["rails", "blogging", "social"],
+  "scripts": {
+    "postdeploy": "bin/rake db:migrate"
+  },
+  "env": {
+    "SECRET_TOKEN": {
+      "description": "A secret key for verifying the integrity of signed cookies.",
+      "generator": "secret"
+    }
+  }
+}
