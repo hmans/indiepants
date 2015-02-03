@@ -2,10 +2,17 @@
 
 Pants Phase 2: A clean IndieWeb implementation of Pants.
 
+### Status
+
+* Currently trying to reach feature parity with the previous implementation. ([Roadmap](https://github.com/hmans/indiepants/issues?q=milestone%3AOne))
+* Please don't use this code yet; I'm still messing with the basics.
+* Please don't send unsolicited pull requests. If you want to submit a change, talk to me first.
+
 ### Mission Notes
 
-* Open-Source from day 1
-* Use simple and open protocols
+* Open-Source from day 1.
+* Use simple and open protocols.
+* Be a good [IndieWeb](http://indiewebify.me/) citizen.
 
 ### Deploy on Heroku
 
