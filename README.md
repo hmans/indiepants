@@ -1,6 +1,7 @@
-# IndiePants
+# IndiePants [![Build Status](https://travis-ci.org/hmans/indiepants.svg?branch=master)](https://travis-ci.org/hmans/indiepants)
 
 Pants Phase 2: A clean IndieWeb implementation of Pants.
+
 
 ### Status
 
