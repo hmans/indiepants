@@ -1,5 +1,5 @@
 require 'rails_helper'
 
-RSpec.describe Post, :type => :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe Post do
+  it "is not valid if URL doesn't match user's host"
 end
