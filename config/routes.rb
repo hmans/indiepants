@@ -3,6 +3,15 @@ Rails.application.routes.draw do
     resources :posts, only: [:index, :show, :create, :update, :destroy]
   end
 
+  # Setup
+  get  'setup' => 'setup#setup'
+  post 'setup' => 'setup#setup'
+
+  # Authentication
+  match 'login'  => 'auth#login', via: [:get, :post]
+  post  'logout' => 'auth#logout'
+
+  # Posts
   get ':year/:month/:day/:slug' => 'posts#show', as: 'nice_post'
   get ':id' => 'posts#show', as: 'uid'
 

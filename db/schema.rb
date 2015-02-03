@@ -33,11 +33,12 @@ ActiveRecord::Schema.define(version: 20150201105121) do
   add_index "posts", ["published_at"], name: "index_posts_on_published_at", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "host",                       null: false
+    t.string   "host",                            null: false
+    t.string   "password_digest"
     t.string   "name"
-    t.boolean  "local",      default: false, null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.boolean  "local",           default: false, null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
   add_index "users", ["host"], name: "index_users_on_host", unique: true, using: :btree

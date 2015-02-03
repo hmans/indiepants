@@ -3,8 +3,10 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_filter do
-    raise "no user configured for this host" unless current_site.present?
+  before_filter :ensure_current_site
+
+  def ensure_current_site
+    redirect_to :setup unless current_site.present?
   end
 
   concerning :CurrentSite do
@@ -19,11 +21,34 @@ class ApplicationController < ActionController::Base
 
   concerning :CurrentUser do
     included do
-      helper_method :current_user
+      helper_method :current_user, :logged_in?, :logged_out?
+    end
+
+    def logged_in?
+      current_user.present? && current_user == current_site
+    end
+
+    def logged_out?
+      !logged_in?
     end
 
     def current_user
-      @current_user = current_site   # XXX
+      @current_user ||= load_current_user
+    end
+
+    def load_current_user
+      current_user_id = session[:current_user_id]
+      if current_user_id
+        User.where(id: current_user_id).take || logout_user
+      end
+    end
+
+    def login_user(user)
+      session[:current_user_id] = user.id
+    end
+
+    def logout_user
+      session[:current_user_id] = nil
     end
   end
 end
