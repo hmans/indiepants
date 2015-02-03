@@ -2,7 +2,12 @@
   "name": "IndiePants",
   "description": "Taking back the web one HTTP request at a time.",
   "repository": "https://github.com/hmans/indiepants",
+  "website": "https://github.com/hmans/indiepants",
   "keywords": ["rails", "blogging", "social"],
+  "addons": [
+    "heroku-postgresql",
+    "mandrill"
+  ],
   "scripts": {
     "postdeploy": "bin/rake db:migrate"
   },
@@ -11,5 +16,6 @@
       "description": "A secret key for verifying the integrity of signed cookies.",
       "generator": "secret"
     }
-  }
+  },
+  "success_url": "/"
 }
