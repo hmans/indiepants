@@ -68,8 +68,23 @@ a {
 }
 
 // FORMS
-textarea, input[type="text"] {
+
+form { @include collapse-margins }
+.input { @extend p }
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+textarea, input[type="text"], input[type="password"] {
   font: $font;
+  border: none;
+  background-color: #eee;
+  border-bottom: 2px solid #ccc;
+  outline: none;
+  padding: 5px;
+  width: 50%;
 }
 
 textarea {
