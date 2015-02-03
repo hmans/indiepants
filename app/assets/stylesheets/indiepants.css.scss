@@ -1,13 +1,31 @@
+@import "compass";
 @import "compass/reset";
 
 // CONFIGURATION
 
 $font: 15px "Helvetica Neue",Helvetica,Arial,sans-serif;
-$background-color: #fff;
+$background-color: #eee;
 $color: #444;
+$content-background-color: #fff;
+$link-color: #f93;
 $light-color: #999;
 
+
+// PROTOTYPES
+
+@mixin collapse-margins {
+  :first-child { margin-top: 0 }
+  :last-child { margin-bottom: 0 }
+}
+
 // BASICS
+
+* { @include box-sizing(inherit); }
+
+html, body {
+  @include box-sizing(border-box);
+  height: 100%;
+}
 
 body {
   font: $font;
@@ -29,14 +47,25 @@ h1, h2, h3, h4, h5, h6 {
   @extend b;
 }
 
+a {
+  color: $link-color;
+}
 
 // CONTENT AREA
 
-#content {
+#main {
   max-width: 800px;
-  margin: 50px auto;
+  margin: 0 auto;
+  min-height: 100%;
 }
 
+#content {
+  @include collapse-margins;
+  background-color: $content-background-color;
+  padding: 40px 20px;
+  min-height: 100%;
+  margin-left: 150px;
+}
 
 // FORMS
 textarea, input[type="text"] {
@@ -45,6 +74,16 @@ textarea, input[type="text"] {
 
 textarea {
   width: 100%;
+}
+
+
+// PRIMARY NAVIGATION
+
+nav[role="primary"] {
+  text-align: right;
+  position: absolute;
+  top: 40px;
+  width: 130px;
 }
 
 // POSTS

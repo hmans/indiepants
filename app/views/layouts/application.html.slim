@@ -8,13 +8,14 @@ html
     = csrf_meta_tags
 
   body
-    nav role="primary"
-      ul
-        li = link_to "Posts", :root
-        - if logged_in?
-          li = link_to "Logout", :logout, method: "post"
-        - else
-          li = link_to "Login", :login
+    #main
+      nav role="primary"
+        ul
+          li = link_to "Posts", :root
+          - if logged_in?
+            li = link_to "Logout", :logout, method: "post"
+          - else
+            li = link_to "Login", :login
 
-    #content
-      = yield
+      #content
+        = yield
