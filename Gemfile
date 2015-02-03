@@ -30,6 +30,7 @@ group :development, :test do
   gem 'binding_of_caller'
   gem 'factory_girl_rails'
   gem 'rspec-rails'
+  gem 'rspec-collection_matchers'
   gem 'foreman'
 
   # Deployment
