@@ -22,9 +22,8 @@ gem 'slodown', github: 'hmans/slodown'
 # API
 # gem 'jbuilder', '~> 2.0'
 
-# Deployment
-# gem 'capistrano-rails', group: :development
 
+# Deployment
 group :development, :test do
   gem 'spring'
   gem 'better_errors'
@@ -32,4 +31,12 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'rspec-rails'
   gem 'foreman'
+
+  # Deployment
+  # gem 'capistrano-rails'
+end
+
+# production only
+group :production do
+  gem 'rails_12factor'
 end
