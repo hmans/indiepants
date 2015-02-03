@@ -10,7 +10,7 @@ $background-color: #fff;
 $color: #444;
 $link-color: #f93;
 $light-color: #999;
-
+$extra-color: #f93;
 
 // PROTOTYPES
 
@@ -98,6 +98,17 @@ textarea, input[type="text"], input[type="password"] {
 
 textarea {
   width: 100%;
+}
+
+input[type="button"], input[type="submit"], button {
+  display: inline-block;
+  background-color: $extra-color;
+  border: none;
+  color: $background-color;
+  font: $font;
+  font-weight: bold;
+  line-height: 1;
+  padding: 8px 16px;
 }
 
 
