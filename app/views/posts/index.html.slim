@@ -1,0 +1,6 @@
+= form_for Post.new do |f|
+  .input
+    = f.text_area :body, rows: 3
+  = f.submit
+
+= render @posts

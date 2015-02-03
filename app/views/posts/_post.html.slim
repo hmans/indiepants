@@ -1,0 +1,5 @@
+article.h-entry
+  header
+    time.dt-published datetime=post.created_at
+      = link_to l(post.created_at, format: "%H:%M"), post.url
+  = raw post.body_html

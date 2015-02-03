@@ -1,0 +1,50 @@
+@import "compass/reset";
+
+// CONFIGURATION
+
+$font: 15px "Helvetica Neue",Helvetica,Arial,sans-serif;
+$background-color: #fff;
+$color: #444;
+$light-color: #999;
+
+// BASICS
+
+body {
+  font: $font;
+  background-color: $background-color;
+  color: $color;
+}
+
+p {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+// CONTENT AREA
+
+#content {
+  max-width: 800px;
+  margin: 50px auto;
+}
+
+
+// FORMS
+textarea, input[type="text"] {
+  font: $font;
+}
+
+textarea {
+  width: 100%;
+}
+
+// POSTS
+
+article.h-entry {
+  @extend p;
+  margin-bottom: 2em;
+
+  header {
+    color: $light-color;
+    @extend p;
+  }
+}
