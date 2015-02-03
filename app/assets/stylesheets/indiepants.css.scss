@@ -12,7 +12,8 @@ $link-color: #f93;
 $light-color: #999;
 $extra-color: #f93;
 
-// PROTOTYPES
+
+// MIXINS
 
 @mixin collapse-margins {
   :first-child { margin-top: 0 }
@@ -28,6 +29,17 @@ $extra-color: #f93;
   a:hover { text-decoration: underline; }
 }
 
+// PROTOTYPES
+
+%fatso {
+  @include reset-links;
+
+  font-weight: bold;
+  text-transform: uppercase;
+
+  a { color: #ccc; }
+  a:hover { color: #666; }
+}
 
 // BASICS
 
@@ -115,14 +127,8 @@ input[type="button"], input[type="submit"], button {
 // PRIMARY NAVIGATION
 
 nav[role="primary"] {
-  @include reset-links;
-
-  font-weight: bold;
+  @extend %fatso;
   margin: 2em 0;
-  text-transform: uppercase;
-
-  a { color: #ccc; }
-  a:hover { color: #666; }
 
   li {
     display: inline-block;
@@ -137,7 +143,7 @@ article.h-entry {
   margin-bottom: 2em;
 
   header {
-    color: $light-color;
     @extend p;
+    @extend %fatso;
   }
 }
