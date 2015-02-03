@@ -1,12 +1,13 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
+
 @import "compass";
 @import "compass/reset";
 
 // CONFIGURATION
 
-$font: 15px "Helvetica Neue",Helvetica,Arial,sans-serif;
-$background-color: #eee;
+$font: 15px "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+$background-color: #fff;
 $color: #444;
-$content-background-color: #fff;
 $link-color: #f93;
 $light-color: #999;
 
@@ -17,6 +18,16 @@ $light-color: #999;
   :first-child { margin-top: 0 }
   :last-child { margin-bottom: 0 }
 }
+
+@mixin reset-links {
+  a { color: inherited; text-decoration: none; }
+}
+
+@mixin hover-links {
+  a { text-decoration: none; }
+  a:hover { text-decoration: underline; }
+}
+
 
 // BASICS
 
@@ -48,23 +59,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 a {
-  color: $link-color;
+  color: inherited;
 }
+
 
 // CONTENT AREA
 
 #main {
-  max-width: 800px;
+  max-width: 700px;
   margin: 0 auto;
   min-height: 100%;
 }
 
 #content {
   @include collapse-margins;
-  background-color: $content-background-color;
-  padding: 40px 20px;
-  min-height: 100%;
-  margin-left: 120px;
+  margin-top: 2em;
 }
 
 // FORMS
@@ -95,24 +104,19 @@ textarea {
 // PRIMARY NAVIGATION
 
 nav[role="primary"] {
-  text-align: right;
-  position: absolute;
-  top: 40px;
-  width: 120px;
+  @include reset-links;
 
-  li { margin: 5px 0; }
+  font-weight: bold;
+  margin: 2em 0;
+  text-transform: uppercase;
 
-  a {
-    color: inherit;
-    text-decoration: none;
-    display: block;
-    background-color: #ddd;
-    padding: 5px 10px 5px 5px;
-    @include border-radius(5px 0 0 5px);
+  a { color: #ccc; }
+  a:hover { color: #666; }
+
+  li {
+    display: inline-block;
+    margin-right: 1em;
   }
-
-  a:hover { background-color: $content-background-color; }
-
 }
 
 // POSTS

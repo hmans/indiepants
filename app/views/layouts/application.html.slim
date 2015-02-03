@@ -11,11 +11,11 @@ html
     #main
       nav role="primary"
         ul
-          li = link_to "Posts", :root
+          li = link_to "Blog", :root
           - if logged_in?
             li = link_to "Logout", :logout, method: "post"
           - else
             li = link_to "Login", :login
 
-      #content
+      section#content
         = yield
