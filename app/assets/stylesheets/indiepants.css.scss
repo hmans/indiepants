@@ -64,7 +64,7 @@ a {
   background-color: $content-background-color;
   padding: 40px 20px;
   min-height: 100%;
-  margin-left: 150px;
+  margin-left: 120px;
 }
 
 // FORMS
@@ -83,7 +83,21 @@ nav[role="primary"] {
   text-align: right;
   position: absolute;
   top: 40px;
-  width: 130px;
+  width: 120px;
+
+  li { margin: 5px 0; }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+    background-color: #ddd;
+    padding: 5px 10px 5px 5px;
+    @include border-radius(5px 0 0 5px);
+  }
+
+  a:hover { background-color: $content-background-color; }
+
 }
 
 // POSTS
