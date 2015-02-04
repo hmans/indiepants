@@ -45,7 +45,7 @@ class Post < ActiveRecord::Base
     dt = published_at || created_at || Time.now
 
     uri = URI(user.url)
-    uri.path = ["/",
+    uri.path = [nil,
       dt.year.to_s.rjust(4, '0'),
       dt.month.to_s.rjust(2, '0'),
       dt.day.to_s.rjust(2, '0'),
