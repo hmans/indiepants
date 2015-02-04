@@ -1,8 +1,6 @@
 h1 Login
 
-= form_for @user, url: login_path, method: 'post' do |f|
-  .input
-    = f.label "Password:"
-    = f.password_field :password
+= simple_form_for @user, url: login_path, method: 'post' do |f|
+  = f.input :password
   .buttons
     = f.submit "Login"

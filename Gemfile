@@ -18,6 +18,7 @@ gem 'slim-rails'
 gem 'uglifier', '>= 1.3.0'
 gem 'turbolinks'
 gem 'slodown', github: 'hmans/slodown'
+gem 'simple_form'
 
 # API
 # gem 'jbuilder', '~> 2.0'

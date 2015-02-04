@@ -2,12 +2,8 @@ h1 Setup
 
 p You're about to claim <strong>#{request.host}</strong> as your site.
 
-= form_for @user, url: setup_path do |f|
-  .input
-    = f.label :name
-    = f.text_field :name
-  .input
-    = f.label :password
-    = f.password_field :password
+= simple_form_for @user, url: setup_path do |f|
+  = f.input :name
+  = f.input :password
   .buttons
     = f.submit
