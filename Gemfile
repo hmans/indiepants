@@ -32,6 +32,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rspec-collection_matchers'
   gem 'foreman'
+  gem 'quiet_assets'
 
   # Deployment
   # gem 'capistrano-rails'
