@@ -8,11 +8,12 @@ class CreatePosts < ActiveRecord::Migration
       # URL handling
       t.string :slug
       t.string :url
-      t.string :previous_urls, array: true, default: [], index: { using: :gin }
+      t.string :previous_urls, array: true, default: [], index: true
 
       # Body & Data
-      t.jsonb  :data, null: false, default: {}
       t.text   :html
+      t.jsonb  :data, null: false, default: {}
+      t.string :tags, array: true, default: [], index: true
 
       # Timestamps
       t.datetime :published_at, index: true
