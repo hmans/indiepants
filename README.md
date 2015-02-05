@@ -24,6 +24,12 @@ Pants Phase 2: A clean IndieWeb implementation of Pants.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
+**Note:** this is currently **broken**, since Heroku will only provision PostgreSQL 9.3
+(while this app requires PostgreSQL 9.4.) It's possible to migrate your Heroku app to
+PosgreSQL 9.4 manually, but that's not good enough. The button will start working again
+once Heroku moves PostgreSQL 9.4 to GA status.
+
+
 ### Interesting Links
 
 * [Webmention](http://webmention.org)
