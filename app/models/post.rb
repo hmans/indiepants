@@ -1,6 +1,6 @@
 class Post < ActiveRecord::Base
   acts_as_paranoid
-  
+
   include PostTypeSupport
 
   scope :latest, -> { order("created_at DESC") }
@@ -11,7 +11,7 @@ class Post < ActiveRecord::Base
 
   before_validation do
     # Make sure a slug is available
-    self.slug ||= generate_slug
+    self.slug ||= generate_unique_slug
   end
 
   before_create do
@@ -46,7 +46,7 @@ class Post < ActiveRecord::Base
   validate :validate_url_matches_host
   validates :slug,
     presence: true,
-    uniqueness: true,
+    uniqueness: { scope: :host },
     format: /\A[a-zA-Z0-9_-]+\Z/
 
 
@@ -65,6 +65,20 @@ class Post < ActiveRecord::Base
 
   def generate_slug
     SecureRandom.hex(6)
+  end
+
+  # Generate a unique slug by adding a numerical, incremental suffix
+  # if the generated_slug is already taken.
+  #
+  def generate_unique_slug
+    slug = generate_slug
+    candidate = slug
+    i = 1
+    while user.posts.where(slug: candidate).any?
+      i += 1
+      candidate = "#{slug}-#{i}"
+    end
+    candidate
   end
 
   def generate_url
