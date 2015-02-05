@@ -5,7 +5,7 @@
   "website": "https://github.com/hmans/indiepants",
   "keywords": ["rails", "blogging", "social"],
   "addons": [
-    "heroku-postgresql",
+    "heroku-postgresql --version=9.4",
     "mandrill"
   ],
   "scripts": {
