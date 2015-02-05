@@ -15,6 +15,11 @@ Pants Phase 2: A clean IndieWeb implementation of Pants.
 * Use simple and open protocols.
 * Be a good [IndieWeb](http://indiewebify.me/) citizen.
 
+### Dependencies
+
+* Ruby 2.2.0
+* PostgreSQL 9.4
+
 ### Deploy on Heroku
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
@@ -31,4 +36,4 @@ Pants Phase 2: A clean IndieWeb implementation of Pants.
 * Create & seed database
 * `foreman start`
 * http://alice.pants.dev and http://bob.pants.dev
-* Tests
+* `bin/rake spec`
