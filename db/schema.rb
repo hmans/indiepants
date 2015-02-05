@@ -26,11 +26,13 @@ ActiveRecord::Schema.define(version: 20150201105121) do
     t.jsonb    "data",          default: {}, null: false
     t.text     "html"
     t.datetime "published_at"
+    t.datetime "deleted_at"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
   end
 
   add_index "posts", ["created_at"], name: "index_posts_on_created_at", using: :btree
+  add_index "posts", ["deleted_at"], name: "index_posts_on_deleted_at", using: :btree
   add_index "posts", ["previous_urls"], name: "index_posts_on_previous_urls", using: :gin
   add_index "posts", ["published_at"], name: "index_posts_on_published_at", using: :btree
 

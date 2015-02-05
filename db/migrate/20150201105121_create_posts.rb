@@ -16,6 +16,7 @@ class CreatePosts < ActiveRecord::Migration
 
       # Timestamps
       t.datetime :published_at, index: true
+      t.datetime :deleted_at,   index: true
       t.timestamps null: false, index: true
     end
   end

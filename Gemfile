@@ -20,6 +20,9 @@ gem 'turbolinks'
 gem 'slodown', github: 'hmans/slodown'
 gem 'simple_form'
 
+# Data
+gem 'paranoia', '~> 2.0'
+
 # API
 # gem 'jbuilder', '~> 2.0'
 

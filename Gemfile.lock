@@ -118,6 +118,8 @@ GEM
       mini_portile (~> 0.6.0)
     nokogumbo (1.2.0)
       nokogiri
+    paranoia (2.1.0)
+      activerecord (~> 4.0)
     pg (0.18.1)
     puma (2.11.0)
       rack (>= 1.1, < 2.0)
@@ -238,6 +240,7 @@ DEPENDENCIES
   factory_girl_rails
   foreman
   jquery-rails
+  paranoia (~> 2.0)
   pg
   puma
   quiet_assets

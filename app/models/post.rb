@@ -1,4 +1,6 @@
 class Post < ActiveRecord::Base
+  acts_as_paranoid
+  
   include PostTypeSupport
 
   scope :latest, -> { order("created_at DESC") }

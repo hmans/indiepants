@@ -11,7 +11,16 @@ class PostsController < ApplicationController
       find_post_by_date_and_slug ||
       find_post_by_previous_url
 
+    # TODO: serve a proper 404 here
     raise "post not found" if @post.blank?
+
+    # If post has been soft-deleted, serve 401 Gone
+    if @post.deleted?
+      # TODO: render this in a somewhat nicer fashion.
+      # TODO: deal with JSON-specific requests
+      render text: '410 Gone', status: 410
+      return
+    end
 
     # Enforce canonical URL
     if request.format.html? && request.url != @post.url
@@ -66,17 +75,22 @@ private
   end
 
   def find_post_by_id
-    current_site.posts.find(params[:id]) if params[:id]
+    current_site.posts
+      .with_deleted
+      .find(params[:id]) if params[:id]
   end
 
   def find_post_by_date_and_slug
     date = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
     current_site.posts
+      .with_deleted
       .where(published_at: (date.beginning_of_day)..(date.end_of_day))
       .where(slug: params[:slug]).take
   end
 
   def find_post_by_previous_url
-    current_site.posts.where("? = ANY (previous_urls)", request.url).take
+    current_site.posts
+      .with_deleted
+      .where("? = ANY (previous_urls)", request.url).take
   end
 end
