@@ -11,11 +11,9 @@ if Rails.env.development?
   bob   = User.local.create!(name: "Bob",   host: "bob.pants.dev", password: "secret")
   localhost = User.local.create!(name: "The Host of Local", host: "localhost", password: "secret")
 
-  FactoryGirl.create :post,
-    user: alice,
-    body: "Hello world! I'm Alice."
+  Pants::Post.create! user: alice, body: "This is a beautiful **Markdown-formatted** article."
+  Post.create! user: alice, html: "<p>This is a post from an outside source (or from an unknown post type.) It comes with HTML that is hopefully sanitized.</p>"
+  Pants::Post.create! user: alice, body: "Hi, I'm Alice! \o/"
 
-  FactoryGirl.create :post,
-    user: bob,
-    body: "Hello world! I'm Bob."
+  Pants::Post.create! user: bob, body: "Hello, I am Bob."
 end

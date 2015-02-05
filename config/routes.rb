@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
   scope :api do
-    resources :posts,
-      defaults: { format: :json },
-      only: [:index, :show, :create, :update, :destroy]
+    resources :posts
   end
 
   # Setup

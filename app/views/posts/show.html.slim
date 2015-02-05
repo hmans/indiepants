@@ -1,1 +1,10 @@
 = render @post
+
+- if logged_in?
+  .post-information
+    p
+      =' link_to "Edit this Post", edit_post_path(@post)
+      =' link_to "Delete this Post", post_path(@post), method: 'delete', data: { confirm: "Are you sure?" }
+    p
+      ' This is a <strong>#{@post.type}</strong> with the ID <strong>#{@post.id}</strong>.
+      ' Its current canonical URL is <strong>#{@post.url}</strong>.

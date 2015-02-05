@@ -1,5 +1,5 @@
 class Post < ActiveRecord::Base
-  attr_accessor :url_builder
+  include PostTypeSupport
 
   scope :latest, -> { order("created_at DESC") }
 
@@ -7,25 +7,46 @@ class Post < ActiveRecord::Base
     foreign_key: "host",
     primary_key: "host"
 
+  before_validation do
+    # Make sure a slug is available
+    self.slug ||= generate_slug
+  end
+
   before_create do
     # If this post is being created by a local, hosted user, there's
     # some extra stuff we'll want to do.
     #
     if user.local?
-      self.slug = generate_slug
-
       # Publish new posts right away
       self.published_at = Time.now
 
+      # Render HTML
+      self.html = generate_html
+
       # build the default URL
       self.url = generate_url
+    end
+  end
 
-      # Render HTML
-      self.body_html = generate_html
+  before_update do
+    if user.local?
+      # Update HTML
+      self.html = generate_html
+
+      # Update URL
+      self.url = generate_url
+      if url_changed?
+        self.previous_urls << url_was
+      end
     end
   end
 
   validate :validate_url_matches_host
+  validates :slug,
+    presence: true,
+    uniqueness: true,
+    format: /\A[a-zA-Z0-9_-]+\Z/
+
 
   def validate_url_matches_host
     if url && user && URI(url).host != user.host
@@ -34,11 +55,14 @@ class Post < ActiveRecord::Base
   end
 
   def generate_html
-    Formatter.new(body).complete.to_s
+    # By default, just set #html to itself. Of course, this method is
+    # expected to be overloaded in child classes. Duh!
+    #
+    html
   end
 
   def generate_slug
-    body.truncate(20).parameterize
+    SecureRandom.hex(6)
   end
 
   def generate_url

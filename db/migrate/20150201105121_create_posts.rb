@@ -3,15 +3,16 @@ class CreatePosts < ActiveRecord::Migration
     create_table :posts, id: :uuid do |t|
       # Core attributes
       t.string :host, null: false
+      t.string :type
 
       # URL handling
       t.string :slug
       t.string :url
-      t.string :previous_urls, array: true, default: []
+      t.string :previous_urls, array: true, default: [], index: { using: :gin }
 
       # Body & Data
-      t.string :body
-      t.string :body_html
+      t.jsonb  :data, null: false, default: {}
+      t.text   :html
 
       # Timestamps
       t.datetime :published_at, index: true

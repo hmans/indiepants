@@ -9,7 +9,7 @@ $font: 15px "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
 $background-color: #fff;
 $color: #444;
 $link-color: #f93;
-$light-color: #999;
+$light-color: #ccc;
 $extra-color: #f93;
 
 
@@ -146,4 +146,9 @@ article.h-entry {
     @extend p;
     @extend %fatso;
   }
+}
+
+.post-information {
+  color: $light-color;
+  margin-top: 3em;
 }
