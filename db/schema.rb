@@ -18,24 +18,26 @@ ActiveRecord::Schema.define(version: 20150201105121) do
   enable_extension "uuid-ossp"
 
   create_table "posts", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
-    t.string   "host",                       null: false
+    t.string   "host",                         null: false
     t.string   "type"
     t.string   "slug"
     t.string   "url"
-    t.string   "previous_urls", default: [],              array: true
+    t.string   "previous_urls",   default: [],              array: true
+    t.string   "referenced_urls", default: [],              array: true
     t.text     "html"
-    t.jsonb    "data",          default: {}, null: false
-    t.string   "tags",          default: [],              array: true
+    t.jsonb    "data",            default: {}, null: false
+    t.string   "tags",            default: [],              array: true
     t.datetime "published_at"
     t.datetime "deleted_at"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   add_index "posts", ["created_at"], name: "index_posts_on_created_at", using: :btree
   add_index "posts", ["deleted_at"], name: "index_posts_on_deleted_at", using: :btree
   add_index "posts", ["previous_urls"], name: "index_posts_on_previous_urls", using: :btree
   add_index "posts", ["published_at"], name: "index_posts_on_published_at", using: :btree
+  add_index "posts", ["referenced_urls"], name: "index_posts_on_referenced_urls", using: :btree
   add_index "posts", ["tags"], name: "index_posts_on_tags", using: :btree
 
   create_table "users", force: :cascade do |t|

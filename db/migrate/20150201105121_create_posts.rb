@@ -9,6 +9,7 @@ class CreatePosts < ActiveRecord::Migration
       t.string :slug
       t.string :url
       t.string :previous_urls, array: true, default: [], index: true
+      t.string :referenced_urls, array: true, default: [], index: true
 
       # Body & Data
       t.text   :html
