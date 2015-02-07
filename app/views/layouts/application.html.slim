@@ -6,6 +6,8 @@ html
     = stylesheet_link_tag    "application", media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag "application", 'data-turbolinks-track' => true
     = csrf_meta_tags
+    - if current_site.present?
+      = auto_discovery_link_tag :atom, posts_url(format: 'atom'), title: "Latest Posts by #{current_site.name} (ATOM)"
 
   body
     #main

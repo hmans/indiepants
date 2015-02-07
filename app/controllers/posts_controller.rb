@@ -3,7 +3,10 @@ class PostsController < ApplicationController
 
   def index
     @posts = current_site.posts.latest
-    respond_with @posts
+
+    respond_with @posts do |format|
+      format.atom
+    end
   end
 
   def show
