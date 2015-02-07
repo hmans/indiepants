@@ -34,6 +34,10 @@ For hosting your own instance of IndiePants using [Docker](https://www.docker.co
 PosgreSQL 9.4 manually, but that's not good enough. The button will start working again
 once Heroku moves PostgreSQL 9.4 to GA status.
 
+### Configuration
+
+Please take a look at `config/initializers/indiepants.rb` for some additional
+settings that let you further customize your IndiePants installation.
 
 ### Interesting Links
 

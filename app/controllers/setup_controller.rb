@@ -9,6 +9,9 @@ class SetupController < ApplicationController
     end
   end
 
+  before_filter :ensure_host_is_claimable
+
+
   def setup
     @user = User.local.build
 
@@ -25,5 +28,13 @@ class SetupController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :password)
+  end
+
+  def ensure_host_is_claimable
+    unless request.host =~ Rails.application.config.x.claimable_hosts
+      # TODO: make this nicer. :)
+      render text: "This host can't be claimed."
+      return
+    end
   end
 end
