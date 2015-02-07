@@ -20,8 +20,14 @@ module PostTypeSupport
   #
   module ClassMethods
     def find_sti_class(name)
-      klass = name.gsub('.', '/').classify
-      klass.safe_constantize || Post
+      klass = name.gsub('.', '/').classify.safe_constantize
+
+      # Default to Post if class not found, or not a subclass of Post.
+      if klass.nil? || !(klass <= Post)
+        klass = Post
+      end
+
+      klass
     end
 
     def sti_name
