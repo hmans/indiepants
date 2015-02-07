@@ -20,6 +20,11 @@ Pants Phase 2: A clean IndieWeb implementation of Pants.
 * Ruby 2.2.0
 * PostgreSQL 9.4
 
+### Running with Docker
+
+For hosting your own instance of IndiePants using [Docker](https://www.docker.com/), please use the
+[indiepants-docker](https://github.com/hmans/indiepants-docker) project.
+
 ### Deploy on Heroku
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)

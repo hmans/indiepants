@@ -81,5 +81,6 @@ test:
 production:
   <<: *default
   database: indiepants_production
-  username: indiepants
-  password: <%= ENV['INDIEPANTS_DATABASE_PASSWORD'] %>
+  username: postgres
+  password:
+  host: db

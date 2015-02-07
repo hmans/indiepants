@@ -1,0 +1,13 @@
+db:
+  image: postgres
+  ports:
+    - "5432"
+web:
+  build: .
+  ports:
+    - "80:80"
+  links:
+    - db
+  environment:
+    - RAILS_ENV=production
+    - SECRET_KEY_BASE
