@@ -30,11 +30,13 @@ gem 'paranoia', '~> 2.0'
 # Deployment
 group :development, :test do
   gem 'spring'
+  gem 'spring-commands-rspec'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'factory_girl_rails'
   gem 'rspec-rails'
   gem 'rspec-collection_matchers'
+  gem 'capybara'
   gem 'foreman'
   gem 'quiet_assets'
 

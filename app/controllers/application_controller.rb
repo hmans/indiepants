@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
     end
 
     def current_site
-      @current_site ||= User.local.where(host: request.host).take
+      @current_site ||= User.where(host: request.host).take
     end
   end
 
