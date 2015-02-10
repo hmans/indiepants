@@ -154,7 +154,7 @@ or any collection of `h-entry` elements.
 
 -- Hendrik Mans, hendrik@mans.de
 
-[Webmention]: webmention.org
+[Webmention]: http://webmention.org
 [microformats2]: http://microformats.org/wiki/microformats2
 [IndiePants]: https://github.com/hmans/indiepants
 [IndieWeb]: http://indiewebcamp.com/
