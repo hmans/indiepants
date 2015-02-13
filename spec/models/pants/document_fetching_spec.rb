@@ -60,7 +60,3 @@ describe Pants::Document do
     end
   end
 end
-
-
-__END__
-moooooo!
