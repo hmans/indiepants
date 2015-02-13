@@ -10,14 +10,19 @@ feature "creating a post" do
     fill_in "Password", with: "secret"
     click_button "Login"
 
-    fill_in 'post_body', with: "Hi, I'm a post!\n\nI'm **Markdown formatted.**"
+    fill_in 'document_body', with: "Hi, I'm a post!\n\nI'm **Markdown formatted.**"
     expect { click_button "Create Post" }
-      .to change { Post.count }.by(1)
+      .to change { Document.count }.by(1)
 
-    post = user.posts.latest.first
+    document = user.documents.latest.first
 
+    # The document's type should be set to the default pants.post
+    expect(document.type).to eq('pants.post')
+
+    # The rendered page should include a rendered version of the post's Markdown
     expect(page.body).to include("<p>I’m <strong>Markdown formatted.</strong></p>")
-    expect(current_url).to eq(post.url)
-    expect(post.type).to eq('pants.post')
+
+    # Are we seeing the correct URL?
+    expect(current_url).to eq(document.url)
   end
 end

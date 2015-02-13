@@ -7,7 +7,7 @@ html
     = javascript_include_tag "application", 'data-turbolinks-track' => true
     = csrf_meta_tags
     - if current_site.present?
-      = auto_discovery_link_tag :atom, posts_url(format: 'atom'), title: "Latest Posts by #{current_site.name} (ATOM)"
+      = auto_discovery_link_tag :atom, documents_url(format: 'atom'), title: "Latest Posts by #{current_site.name} (ATOM)"
       link href=webmentions_url rel="webmention"
 
   body

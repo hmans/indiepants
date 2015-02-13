@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "creating a post" do
+feature "editing a post" do
   given!(:user) { create :user, local: true, host: 'foo.pants.dev', password: 'secret' }
   given!(:post) { create :pants_post, user: user, body: "I'm a post!" }
 

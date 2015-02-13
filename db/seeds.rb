@@ -12,7 +12,7 @@ if Rails.env.development?
   localhost = User.local.create!(name: "The Host of Local", host: "localhost", password: "secret")
 
   Pants::Post.create! user: alice, body: "This is a beautiful **Markdown-formatted** article."
-  Post.create! user: alice, html: "<p>This is a post from an outside source (or from an unknown post type.) It comes with HTML that is hopefully sanitized.</p>"
+  Document.create!    user: alice, html: "<p>This is a post from an outside source (or from an unknown post type.) It comes with HTML that is hopefully sanitized.</p>"
   Pants::Post.create! user: alice, body: "Hi, I'm Alice! \o/"
 
   Pants::Post.create! user: bob, body: "Hello, I am Bob."

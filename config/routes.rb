@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   scope :api do
-    resources :posts
+    resources :documents
     resources :webmentions
   end
 
@@ -13,8 +13,8 @@ Rails.application.routes.draw do
   post  'logout' => 'auth#logout'
 
   # Posts
-  get ':year/:month/:day/:slug' => 'posts#show', as: 'nice_post'
-  get ':id' => 'posts#show', as: 'uid'
+  get ':year/:month/:day/:slug' => 'documents#show', as: 'nice_document'
+  get ':id' => 'documents#show', as: 'uid'
 
-  root to: "posts#index"
+  root to: "documents#index"
 end

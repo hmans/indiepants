@@ -1,8 +1,8 @@
-class Post < ActiveRecord::Base
+class Document < ActiveRecord::Base
   acts_as_paranoid
 
-  include PostTypeSupport
-  include PostFetching
+  include DocumentTypeSupport
+  include DocumentFetching
 
   scope :latest, -> { order("created_at DESC") }
 
@@ -12,41 +12,30 @@ class Post < ActiveRecord::Base
 
   before_validation do
     if local?
-      # Make sure a slug is available
-      self.slug ||= generate_unique_slug
-    end
-  end
-
-  before_create do
-    # If this post is being created by a local, hosted user, there's
-    # some extra stuff we'll want to do.
-    #
-    if local?
       # Publish new posts right away
       self.published_at = Time.now
 
       # Render HTML
       self.html = generate_html
 
+      # Make sure a slug is available
+      self.slug ||= generate_unique_slug
+
       # build the default URL
       self.url = generate_url
     end
-  end
 
-  before_update do
-    if local?
-      # Update HTML
-      self.html = generate_html
-
-      # Update URL
-      self.url = generate_url
-      if url_changed?
-        self.previous_urls << url_was
-      end
+    # Remember previous URLs
+    if persisted? && url_changed?
+      self.previous_urls << url_was
     end
   end
 
   validate :validate_url_matches_host
+
+  validates :url,
+    presence: true,
+    uniqueness: true
 
   validates :slug,
     presence: true,
@@ -54,13 +43,9 @@ class Post < ActiveRecord::Base
     format: /\A[a-zA-Z0-9_-]+\Z/,
     if: -> { local? }
 
-  validates :url,
-    presence: true,
-    uniqueness: true
-
   def validate_url_matches_host
-    if url && user && URI(url).host != user.host
-      errors.add(:url, "doesn't match user's host")
+    if url && URI(url).host != host
+      errors.add(:url, "doesn't match host")
     end
   end
 
@@ -82,7 +67,7 @@ class Post < ActiveRecord::Base
     slug = generate_slug
     candidate = slug
     i = 1
-    while user.posts.where(slug: candidate).any?
+    while user.documents.where(slug: candidate).any?
       i += 1
       candidate = "#{slug}-#{i}"
     end
@@ -111,7 +96,10 @@ class Post < ActiveRecord::Base
   end
 
   def url=(v)
-    self.host = URI(v).host
+    uri = URI(v)
+    self.host = uri.host
+    self.path = uri.path
+
     write_attribute(:url, v)
   end
 end

@@ -1,7 +1,0 @@
-- if logged_in?
-  = form_for Pants::Post.new, as: 'post', url: posts_path do |f|
-    = f.hidden_field :type
-    = f.text_area :body, rows: 3
-    = f.submit
-
-= render @posts

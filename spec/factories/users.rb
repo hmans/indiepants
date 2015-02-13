@@ -4,5 +4,10 @@ FactoryGirl.define do
     host { name.parameterize + ".dev" }
     url  { "http://#{host}"}
     password "secret"
+    local true
+  end
+
+  factory :remote_user, parent: :user do
+    local false
   end
 end

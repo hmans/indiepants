@@ -1,4 +1,4 @@
-module PostFetching
+module DocumentFetching
   extend ActiveSupport::Concern
 
   def fetch!

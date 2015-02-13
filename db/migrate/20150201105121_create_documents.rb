@@ -1,15 +1,15 @@
-class CreatePosts < ActiveRecord::Migration
+class CreateDocuments < ActiveRecord::Migration
   def change
-    create_table :posts, id: :uuid do |t|
+    create_table :documents, id: :uuid do |t|
       # Core attributes
-      t.string :host, null: false
+      t.string :url,  null: false
+      t.string :host, null: false, index: true
+      t.string :path, null: false
       t.string :type
 
-      # URL handling
+      # Pants specific
       t.string :slug
-      t.string :url
       t.string :previous_urls, array: true, default: [], index: true
-      t.string :referenced_urls, array: true, default: [], index: true
 
       # Body & Data
       t.text   :html
