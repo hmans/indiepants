@@ -9,6 +9,7 @@ html
     - if current_site.present?
       = auto_discovery_link_tag :atom, pants_documents_url(format: 'atom'), title: "Latest Posts by #{current_site.name} (ATOM)"
       link href=pants_webmentions_url rel="webmention"
+    = yield :header
 
   body
     #main

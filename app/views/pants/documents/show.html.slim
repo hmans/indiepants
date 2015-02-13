@@ -1,3 +1,6 @@
+- content_for :header do
+  link rel="pants-document" href=(pants_document_path(@document, format: 'json'))
+
 = render @document
 
 - if logged_in?
