@@ -2,7 +2,7 @@ h1 Setup
 
 p You're about to claim <strong>#{request.host}</strong> as your site.
 
-= simple_form_for @user, url: setup_path do |f|
+= simple_form_for @user, url: pants_setup_path do |f|
   = f.input :name
   = f.input :password
   .buttons

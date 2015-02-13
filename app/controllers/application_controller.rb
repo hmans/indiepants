@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   before_filter :ensure_current_site
 
   def ensure_current_site
-    redirect_to :setup unless current_site.present?
+    redirect_to :pants_setup unless current_site.present?
   end
 
   concerning :CurrentSite do
