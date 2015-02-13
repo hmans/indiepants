@@ -40,7 +40,8 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'rspec-rails'
   gem 'rspec-collection_matchers'
-  gem 'capybara'
+  gem 'capybara', require: false
+  gem 'webmock', require: false
   gem 'foreman'
   gem 'quiet_assets'
 

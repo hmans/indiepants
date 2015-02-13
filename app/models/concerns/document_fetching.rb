@@ -37,6 +37,7 @@ module DocumentFetching
 
   def fetch_from_magic_extraction(page)
     # TODO: apply some magic extraction algorithm!
+    false
   end
 
   # Returns true if it's time to fetch the contents for this post.
