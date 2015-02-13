@@ -2,6 +2,7 @@ class Post < ActiveRecord::Base
   acts_as_paranoid
 
   include PostTypeSupport
+  include PostFetching
 
   scope :latest, -> { order("created_at DESC") }
 
@@ -10,15 +11,17 @@ class Post < ActiveRecord::Base
     primary_key: "host"
 
   before_validation do
-    # Make sure a slug is available
-    self.slug ||= generate_unique_slug
+    if local?
+      # Make sure a slug is available
+      self.slug ||= generate_unique_slug
+    end
   end
 
   before_create do
     # If this post is being created by a local, hosted user, there's
     # some extra stuff we'll want to do.
     #
-    if user.local?
+    if local?
       # Publish new posts right away
       self.published_at = Time.now
 
@@ -31,7 +34,7 @@ class Post < ActiveRecord::Base
   end
 
   before_update do
-    if user.local?
+    if local?
       # Update HTML
       self.html = generate_html
 
@@ -44,11 +47,16 @@ class Post < ActiveRecord::Base
   end
 
   validate :validate_url_matches_host
+
   validates :slug,
     presence: true,
     uniqueness: { scope: :host },
-    format: /\A[a-zA-Z0-9_-]+\Z/
+    format: /\A[a-zA-Z0-9_-]+\Z/,
+    if: -> { local? }
 
+  validates :url,
+    presence: true,
+    uniqueness: true
 
   def validate_url_matches_host
     if url && user && URI(url).host != user.host
@@ -92,5 +100,18 @@ class Post < ActiveRecord::Base
       slug].join("/")
 
     uri.to_s
+  end
+
+  def local?
+    user.try(:local?)
+  end
+
+  def remote?
+    !local?
+  end
+
+  def url=(v)
+    self.host = URI(v).host
+    write_attribute(:url, v)
   end
 end

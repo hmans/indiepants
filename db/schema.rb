@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150201105121) do
+ActiveRecord::Schema.define(version: 20150207193808) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,5 +51,19 @@ ActiveRecord::Schema.define(version: 20150201105121) do
   end
 
   add_index "users", ["host"], name: "index_users_on_host", unique: true, using: :btree
+
+  create_table "webmentions", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "source"
+    t.string   "target"
+    t.uuid     "source_post_id"
+    t.uuid     "target_post_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "webmentions", ["source_post_id"], name: "index_webmentions_on_source_post_id", using: :btree
+  add_index "webmentions", ["target_post_id"], name: "index_webmentions_on_target_post_id", using: :btree
+  add_index "webmentions", ["user_id"], name: "index_webmentions_on_user_id", using: :btree
 
 end

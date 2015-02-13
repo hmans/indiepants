@@ -5,6 +5,9 @@ class User < ActiveRecord::Base
     foreign_key: "host",
     primary_key: "host"
 
+  has_many :webmentions,
+    dependent: :destroy
+
   scope :local, -> { where(local: true) }
   scope :remote, -> { where(local: false) }
 
