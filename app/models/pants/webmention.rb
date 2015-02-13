@@ -1,4 +1,4 @@
-class Webmention < ActiveRecord::Base
+class Pants::Webmention < ActiveRecord::Base
   validates :user_id, :source, :target,
     presence: true
 

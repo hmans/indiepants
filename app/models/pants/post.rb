@@ -1,4 +1,4 @@
-class Pants::Post < ::Document
+class Pants::Post < Pants::Document
   store_accessor :data, :body
 
   validates :body,

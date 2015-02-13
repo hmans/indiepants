@@ -12,7 +12,7 @@ feature "creating a post" do
 
     fill_in 'document_body', with: "Hi, I'm a post!\n\nI'm **Markdown formatted.**"
     expect { click_button "Create Post" }
-      .to change { Document.count }.by(1)
+      .to change { Pants::Document.count }.by(1)
 
     document = user.documents.latest.first
 

@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
     end
 
     def current_site
-      @current_site ||= User.where(host: request.host).take
+      @current_site ||= Pants::User.where(host: request.host).take
     end
   end
 
@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
     def load_current_user
       current_user_id = session[:current_user_id]
       if current_user_id
-        User.where(id: current_user_id).take || logout_user
+        Pants::User.where(id: current_user_id).take || logout_user
       end
     end
 

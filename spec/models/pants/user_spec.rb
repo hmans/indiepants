@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe User do
+describe Pants::User do
   subject { build_stubbed(:user) }
 
   specify "has a valid default factory" do

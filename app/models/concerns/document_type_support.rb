@@ -23,8 +23,8 @@ module DocumentTypeSupport
       klass = name.gsub('.', '/').classify.safe_constantize
 
       # Default to Post if class not found, or not a subclass of Post.
-      if klass.nil? || !(klass <= Document)
-        klass = Document
+      if klass.nil? || !(klass <= Pants::Document)
+        klass = Pants::Document
       end
 
       klass

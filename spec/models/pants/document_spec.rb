@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Document do
+describe Pants::Document do
   subject { build_stubbed :document }
 
   it "has a valid default factory" do

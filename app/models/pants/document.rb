@@ -1,4 +1,4 @@
-class Document < ActiveRecord::Base
+class Pants::Document < ActiveRecord::Base
   acts_as_paranoid
 
   include DocumentTypeSupport

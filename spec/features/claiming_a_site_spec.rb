@@ -10,9 +10,9 @@ feature "claiming a new site" do
     fill_in "Password", with: "secret123"
 
     expect { click_button "Create Site" }
-      .to change { User.count }.by(1)
+      .to change { Pants::User.count }.by(1)
 
     expect(current_path).to eq("/")
-    expect(User.where(host: "foo.pants.dev").count).to eq(1)
+    expect(Pants::User.where(host: "foo.pants.dev").count).to eq(1)
   end
 end

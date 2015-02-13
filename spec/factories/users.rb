@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :user do
+  factory :user, class: "Pants::User" do
     sequence(:name, 'A') { |n| "User #{n}" }
     host { name.parameterize + ".dev" }
     url  { "http://#{host}"}
