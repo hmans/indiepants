@@ -1,5 +1,5 @@
-feed.entry(document, url: document_url(post), id: "tag:#{document.host},2005:#{document.path}") do |entry|
-  entry.url     post.url
+feed.entry(document, url: document_url(document), id: "tag:#{document.host},2005:#{document.path}") do |entry|
+  entry.url     document.url
   # entry.title   post.title
 
   # content
