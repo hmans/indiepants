@@ -5,7 +5,7 @@ Pants Phase 2: A clean IndieWeb implementation of Pants.
 
 ### Status
 
-* Currently trying to reach feature parity with the previous implementation. ([Roadmap](https://github.com/hmans/indiepants/issues?q=milestone%3AOne))
+* Currently trying to reach feature parity with the previous implementation. ([Roadmap/Status](https://github.com/hmans/indiepants/milestones))
 * Please don't use this code yet; I'm still messing with the basics.
 * Please don't send unsolicited pull requests. If you want to submit a change, talk to me first.
 
