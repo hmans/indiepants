@@ -8,8 +8,8 @@ Rails.application.routes.draw do
     post 'setup' => 'setup#setup'
 
     # Authentication
-    match  'login'  => 'auth#login', via: [:get, :post]
-    delete 'login' => 'auth#logout'
+    match  'login'  => 'pants/auth#login', via: [:get, :post]
+    delete 'login' => 'pants/auth#logout'
   end
 
   # Posts

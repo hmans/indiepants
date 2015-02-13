@@ -1,4 +1,4 @@
-class AuthController < ApplicationController
+class Pants::AuthController < ApplicationController
   def login
     @user = current_site
 
