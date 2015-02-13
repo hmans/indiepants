@@ -16,7 +16,7 @@ html
         ul
           li = link_to "Blog", :root
           - if logged_in?
-            li = link_to "Logout", :logout, method: "post"
+            li = link_to "Logout", :login, method: "delete"
           - else
             li = link_to "Login", :login
 
