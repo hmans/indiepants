@@ -7,12 +7,12 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 if Rails.env.development?
-  alice = User.local.create!(name: "Alice", host: "alice.pants.dev", password: "secret")
-  bob   = User.local.create!(name: "Bob",   host: "bob.pants.dev", password: "secret")
-  localhost = User.local.create!(name: "The Host of Local", host: "localhost", password: "secret")
+  alice = Pants::User.local.create!(name: "Alice", host: "alice.pants.dev", password: "secret")
+  bob   = Pants::User.local.create!(name: "Bob",   host: "bob.pants.dev", password: "secret")
+  localhost = Pants::User.local.create!(name: "The Host of Local", host: "localhost", password: "secret")
 
   Pants::Post.create! user: alice, body: "This is a beautiful **Markdown-formatted** article."
-  Document.create!    user: alice, html: "<p>This is a post from an outside source (or from an unknown post type.) It comes with HTML that is hopefully sanitized.</p>"
+  Pants::Document.create!    user: alice, html: "<p>This is a post from an outside source (or from an unknown post type.) It comes with HTML that is hopefully sanitized.</p>"
   Pants::Post.create! user: alice, body: "Hi, I'm Alice! \o/"
 
   Pants::Post.create! user: bob, body: "Hello, I am Bob."

@@ -1,3 +1,5 @@
+require 'pants'
+
 Pants::Application.configure do
   # Typically, users will be able to create new sites on your IndiePants
   # instance as soon as they can reach it through a host name that so far

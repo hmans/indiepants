@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20150207193808) do
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
-  create_table "documents", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "pants_documents", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.string   "url",                        null: false
     t.string   "host",                       null: false
     t.string   "path",                       null: false
@@ -34,14 +34,14 @@ ActiveRecord::Schema.define(version: 20150207193808) do
     t.datetime "updated_at",                 null: false
   end
 
-  add_index "documents", ["created_at"], name: "index_documents_on_created_at", using: :btree
-  add_index "documents", ["deleted_at"], name: "index_documents_on_deleted_at", using: :btree
-  add_index "documents", ["host"], name: "index_documents_on_host", using: :btree
-  add_index "documents", ["previous_urls"], name: "index_documents_on_previous_urls", using: :btree
-  add_index "documents", ["published_at"], name: "index_documents_on_published_at", using: :btree
-  add_index "documents", ["tags"], name: "index_documents_on_tags", using: :btree
+  add_index "pants_documents", ["created_at"], name: "index_pants_documents_on_created_at", using: :btree
+  add_index "pants_documents", ["deleted_at"], name: "index_pants_documents_on_deleted_at", using: :btree
+  add_index "pants_documents", ["host"], name: "index_pants_documents_on_host", using: :btree
+  add_index "pants_documents", ["previous_urls"], name: "index_pants_documents_on_previous_urls", using: :btree
+  add_index "pants_documents", ["published_at"], name: "index_pants_documents_on_published_at", using: :btree
+  add_index "pants_documents", ["tags"], name: "index_pants_documents_on_tags", using: :btree
 
-  create_table "users", force: :cascade do |t|
+  create_table "pants_users", force: :cascade do |t|
     t.string   "url",                             null: false
     t.string   "host",                            null: false
     t.string   "password_digest"
@@ -51,9 +51,9 @@ ActiveRecord::Schema.define(version: 20150207193808) do
     t.datetime "updated_at",                      null: false
   end
 
-  add_index "users", ["host"], name: "index_users_on_host", unique: true, using: :btree
+  add_index "pants_users", ["host"], name: "index_pants_users_on_host", unique: true, using: :btree
 
-  create_table "webmentions", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "pants_webmentions", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.string   "source"
     t.string   "target"
     t.uuid     "source_document_id"
@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(version: 20150207193808) do
     t.datetime "updated_at",         null: false
   end
 
-  add_index "webmentions", ["source_document_id"], name: "index_webmentions_on_source_document_id", using: :btree
-  add_index "webmentions", ["target_document_id"], name: "index_webmentions_on_target_document_id", using: :btree
+  add_index "pants_webmentions", ["source_document_id"], name: "index_pants_webmentions_on_source_document_id", using: :btree
+  add_index "pants_webmentions", ["target_document_id"], name: "index_pants_webmentions_on_target_document_id", using: :btree
 
 end

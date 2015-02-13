@@ -1,6 +1,6 @@
 class CreateUsers < ActiveRecord::Migration
   def change
-    create_table :users do |t|
+    create_table :pants_users do |t|
       # URL etc.
       t.string :url,  null: false
       t.string :host, null: false, index: { unique: true }

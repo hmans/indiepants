@@ -1,6 +1,6 @@
 class CreateWebmentions < ActiveRecord::Migration
   def change
-    create_table :webmentions, id: :uuid do |t|
+    create_table :pants_webmentions, id: :uuid do |t|
       t.string :source
       t.string :target
       t.uuid :source_document_id, index: true

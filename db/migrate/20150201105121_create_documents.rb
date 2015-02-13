@@ -1,6 +1,6 @@
 class CreateDocuments < ActiveRecord::Migration
   def change
-    create_table :documents, id: :uuid do |t|
+    create_table :pants_documents, id: :uuid do |t|
       # Core attributes
       t.string :url,  null: false
       t.string :host, null: false, index: true
