@@ -1,4 +1,4 @@
-class SetupController < ApplicationController
+class Pants::SetupController < ApplicationController
   # We can only run this controller if there is _no_ current site.
   #
   skip_before_filter :ensure_current_site

@@ -4,8 +4,8 @@ Rails.application.routes.draw do
     resources :webmentions
 
     # Setup
-    get  'setup' => 'setup#setup'
-    post 'setup' => 'setup#setup'
+    get  'setup' => 'pants/setup#setup'
+    post 'setup' => 'pants/setup#setup'
 
     # Authentication
     match  'login'  => 'pants/auth#login', via: [:get, :post]
