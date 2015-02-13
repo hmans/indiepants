@@ -6,6 +6,7 @@ class CreateDocuments < ActiveRecord::Migration
       t.string :host, null: false, index: true
       t.string :path, null: false
       t.string :type
+      t.string :title
 
       # Pants specific
       t.string :slug

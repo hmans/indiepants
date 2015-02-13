@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20150207193808) do
     t.string   "host",                       null: false
     t.string   "path",                       null: false
     t.string   "type"
+    t.string   "title"
     t.string   "slug"
     t.string   "previous_urls", default: [],              array: true
     t.text     "html"

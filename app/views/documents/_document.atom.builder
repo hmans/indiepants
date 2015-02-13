@@ -1,6 +1,6 @@
 feed.entry(document, url: document_url(document), id: "tag:#{document.host},2005:#{document.path}") do |entry|
   entry.url     document.url
-  # entry.title   post.title
+  entry.title   document.title
 
   # content
   entry.content document.html
