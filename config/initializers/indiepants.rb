@@ -1,4 +1,4 @@
-Indiepants::Application.configure do
+Pants::Application.configure do
   # Typically, users will be able to create new sites on your IndiePants
   # instance as soon as they can reach it through a host name that so far
   # hasn't been taken. You may want to restrict these to a specific pattern;
