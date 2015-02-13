@@ -3,8 +3,8 @@
 - if logged_in?
   .document-information
     p
-      => link_to "Edit this Post", edit_document_path(@document)
-      => link_to "Delete this Post", document_path(@document), method: 'delete', data: { confirm: "Are you sure?" }
+      => link_to "Edit this Post", edit_pants_document_path(@document)
+      => link_to "Delete this Post", pants_document_path(@document), method: 'delete', data: { confirm: "Are you sure?" }
     p
       ' This is a <strong>#{@document.type}</strong> with the ID <strong>#{@document.id}</strong>.
       ' Its current canonical URL is <strong>#{@document.url}</strong>.

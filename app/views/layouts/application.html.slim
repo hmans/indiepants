@@ -7,8 +7,8 @@ html
     = javascript_include_tag "application", 'data-turbolinks-track' => true
     = csrf_meta_tags
     - if current_site.present?
-      = auto_discovery_link_tag :atom, documents_url(format: 'atom'), title: "Latest Posts by #{current_site.name} (ATOM)"
-      link href=webmentions_url rel="webmention"
+      = auto_discovery_link_tag :atom, pants_documents_url(format: 'atom'), title: "Latest Posts by #{current_site.name} (ATOM)"
+      link href=pants_webmentions_url rel="webmention"
 
   body
     #main
@@ -16,9 +16,9 @@ html
         ul
           li = link_to "Blog", :root
           - if logged_in?
-            li = link_to "Logout", :login, method: "delete"
+            li = link_to "Logout", :pants_login, method: "delete"
           - else
-            li = link_to "Login", :login
+            li = link_to "Login", :pants_login
 
       section#content
         = yield

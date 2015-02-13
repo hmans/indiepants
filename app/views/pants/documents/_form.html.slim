@@ -1,0 +1,9 @@
+= simple_form_for document, as: :document, url: document.new_record? ? pants_documents_path : pants_document_path(document) do |f|
+  = f.hidden_field :type
+  = render_document_form(f)
+
+  h3 Additional Options
+  = f.input :slug
+
+  .buttons
+    = f.submit

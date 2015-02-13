@@ -1,4 +1,4 @@
-class DocumentsController < ApplicationController
+class Pants::DocumentsController < ApplicationController
   respond_to :html, :json
 
   def index

@@ -1,5 +1,5 @@
 - if logged_in?
-  = form_for Pants::Post.new, as: 'document', url: documents_path do |f|
+  = form_for Pants::Post.new, as: 'document', url: pants_documents_path do |f|
     = f.hidden_field :type
     = f.text_area :body, rows: 3
     = f.submit
