@@ -22,15 +22,18 @@ module DocumentFetching
       if pants_json_url = link.first.try(:[], "href")
         json = HTTParty.get(URI.join(url, pants_json_url))
         consume_json(json)
+
         :pants
       end
     end
   end
 
   def fetch_from_microformats(page)
-    if h_entry = page.css('.h-entry').first
-      self.html = h_entry.css('.e-content').children.to_s rescue nil
-      self.published_at = h_entry.css('.dt-published').attr('datetime').to_s rescue nil
+    if h_entry = page.at_css('.h-entry')
+      self.html = h_entry.at_css('.e-content').try { inner_html.strip }
+      self.title = h_entry.at_css('.p-name').try { text }
+      self.published_at = h_entry.at_css('.dt-published').try { attr('datetime') }
+
       :microformats
     end
   end

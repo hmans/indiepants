@@ -52,7 +52,38 @@ describe Pants::Document do
     end
 
     context "when the remote document has a h-entry" do
-      it "fetches the document from the h-entry"
+      let(:html_body) do
+        <<-EOS
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>PSA</title>
+          </head>
+          <body>
+            <article class="h-entry">
+              <h3 class="p-name">Public Service Announcement</h3>
+              <time class="dt-published" datetime="2015-01-22 19:22:13">22.01.15 19:22</time>
+              <div class="e-content">
+                <p>This is a post without pants-document JSON.</p>
+              </div>
+            </article>
+          </body>
+        </html>
+        EOS
+      end
+
+      before do
+        stub_request(:get, "http://remote-host/html")
+          .to_return(status: 200, body: html_body, headers: { "Content_Type": "text/html" })
+      end
+
+      it "fetches the document from the h-entry" do
+        document = Pants::Document.new(url: "http://remote-host/html")
+        expect(document.fetch!).to eq(:microformats)
+        expect(document.html).to eq("<p>This is a post without pants-document JSON.</p>")
+        expect(document.title).to eq("Public Service Announcement")
+        expect(document.published_at).to eq("2015-01-22 19:22:13")
+      end
     end
 
     context "when the remote document is simple HTML" do
