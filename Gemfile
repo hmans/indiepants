@@ -33,7 +33,7 @@ gem 'httparty'
 # Development
 group :development, :test do
   gem 'pry-rails'
-  gem 'spring'
+  gem 'spring', '~> 1.2.0'  # newer versions conflicted with slodown's git dependency
   gem 'spring-commands-rspec'
   gem 'better_errors'
   gem 'binding_of_caller'
