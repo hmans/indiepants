@@ -27,7 +27,7 @@ gem 'paranoia', '~> 2.0'
 gem 'httparty'
 
 # API
-# gem 'jbuilder', '~> 2.0'
+gem 'jbuilder', '~> 2.0'
 
 
 # Development
