@@ -1,4 +1,4 @@
-feed.entry(document, url: document_url(document), id: "tag:#{document.host},2005:#{document.path}") do |entry|
+feed.entry(document, url: document.url, id: "tag:#{document.user.host},2005:#{document.path}") do |entry|
   entry.url     document.url
   entry.title   document.title
 
