@@ -2,9 +2,10 @@ module Pants
   class User < ActiveRecord::Base
     has_secure_password validations: false
 
-    validates_presence_of :password,
-      on: :create,
-      if: :local?
+    validates :password,
+      if: :local?, on: :create,
+      length: { within: 6..40 },
+      presence: true
 
     has_many :documents,
       dependent: :destroy
