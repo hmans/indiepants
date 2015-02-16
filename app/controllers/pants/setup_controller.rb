@@ -4,14 +4,14 @@ module Pants
     #
     skip_before_filter :ensure_current_site
 
-    before_filter do
+    before_action do
       if current_site.present?
         redirect_to :root
       end
     end
 
-    before_filter :ensure_host_is_claimable
-
+    before_action :ensure_host_is_claimable
+    before_action :ensure_logged_out!
 
     def setup
       @user = User.local.build

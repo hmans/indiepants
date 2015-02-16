@@ -50,5 +50,13 @@ class ApplicationController < ActionController::Base
     def logout_user
       session[:current_user_id] = nil
     end
+
+    def ensure_logged_in!
+      raise "No access" if logged_out?
+    end
+
+    def ensure_logged_out!
+      raise "No access" if logged_in?
+    end
   end
 end

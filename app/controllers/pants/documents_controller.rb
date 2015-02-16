@@ -2,6 +2,8 @@ module Pants
   class DocumentsController < ApplicationController
     respond_to :html, :json
 
+    before_action :ensure_logged_in!, except: [:show, :index]
+
     def index
       @documents = current_site.documents.latest
 
