@@ -1,10 +1,13 @@
 module Pants
   class User < ActiveRecord::Base
-    has_secure_password
+    has_secure_password validations: false
+
+    validates_presence_of :password,
+      on: :create,
+      if: :local?
 
     has_many :documents,
-      foreign_key: "host",
-      primary_key: "host"
+      dependent: :destroy
 
     has_many :webmentions,
       dependent: :destroy
@@ -12,18 +15,21 @@ module Pants
     scope :local,  -> { where(local: true) }
     scope :remote, -> { where(local: false) }
 
-    validate :validate_host_matches_url
-
-    before_validation :set_default_url
-
-    def set_default_url
-      self.url ||= "http://#{host}" if host.present?
+    # Build a complete URL from the components stored with
+    # this user record.
+    #
+    def url
+      uri = URI("#{scheme}://#{host}")
+      uri.to_s
     end
 
-    def validate_host_matches_url
-      if url.present? && URI(url).host != host
-        errors.add(:host, "does not match URL")
-      end
+    # When setting the URL, split it into its component and store them.
+    #
+    def url=(v)
+      uri = URI(v)
+      self.scheme = uri.scheme
+      self.host = uri.host
+      uri
     end
 
     def remote?

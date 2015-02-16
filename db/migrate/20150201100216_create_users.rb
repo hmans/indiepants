@@ -1,9 +1,9 @@
 class CreateUsers < ActiveRecord::Migration
   def change
-    create_table :pants_users do |t|
-      # URL etc.
-      t.string :url,  null: false
-      t.string :host, null: false, index: { unique: true }
+    create_table :pants_users, id: :uuid do |t|
+      # URL
+      t.string  :host,   null: false, index: { unique: true }
+      t.string  :scheme, null: false, default: 'http'
 
       # Pants-specific
       t.string :password_digest

@@ -28,7 +28,6 @@ describe Pants::Document do
           html: "<p>Pants is awesome, Pants is great!</p>",
           data: { foo: "bar" },
           tags: ["foo", "bar"],
-          previous_urls: ["http://remote-host/old"],
           published_at: 12.days.ago.iso8601
         }.with_indifferent_access
       end
@@ -45,7 +44,7 @@ describe Pants::Document do
         document = Pants::Document.new(url: "http://remote-host/html")
         expect(document.fetch!).to eq(:pants)
 
-        %w[url type title html data tags previous_urls published_at].each do |name|
+        %w[url type title html data tags published_at].each do |name|
           expect(document.send(name)).to eq(json[name])
         end
       end

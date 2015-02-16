@@ -7,8 +7,9 @@ class Pants::Document < ActiveRecord::Base
   scope :latest, -> { order("created_at DESC") }
 
   belongs_to :user,
-    foreign_key: "host",
-    primary_key: "host"
+    class_name: "Pants::User",
+    foreign_key: "user_id",
+    autosave: true
 
   before_validation do
     if local?
@@ -21,33 +22,23 @@ class Pants::Document < ActiveRecord::Base
       # Make sure a slug is available
       self.slug ||= generate_unique_slug
 
-      # build the default URL
-      self.url = generate_url
+      # Update the path
+      if path.blank? || (slug_was && slug_changed?)
+        self.path = generate_path
+      end
     end
 
-    # Remember previous URLs
-    if persisted? && url_changed?
-      self.previous_urls << url_was
+    # Remember previous paths
+    if persisted? && path_changed?
+      self.previous_paths << path_was
     end
   end
-
-  validate :validate_url_matches_host
-
-  validates :url,
-    presence: true,
-    uniqueness: true
 
   validates :slug,
     presence: true,
-    uniqueness: { scope: :host },
+    uniqueness: { scope: :user_id },
     format: /\A[a-zA-Z0-9_-]+\Z/,
     if: -> { local? }
-
-  def validate_url_matches_host
-    if url && URI(url).host != host
-      errors.add(:url, "doesn't match host")
-    end
-  end
 
   def generate_html
     # By default, just set #html to itself. Of course, this method is
@@ -74,17 +65,14 @@ class Pants::Document < ActiveRecord::Base
     candidate
   end
 
-  def generate_url
+  def generate_path
     dt = published_at || created_at || Time.now
 
-    uri = URI(user.url)
-    uri.path = [nil,
+    [nil,
       dt.year.to_s.rjust(4, '0'),
       dt.month.to_s.rjust(2, '0'),
       dt.day.to_s.rjust(2, '0'),
       slug].join("/")
-
-    uri.to_s
   end
 
   def local?
@@ -95,11 +83,15 @@ class Pants::Document < ActiveRecord::Base
     !local?
   end
 
-  def url=(v)
-    uri = URI(v)
-    self.host = uri.host
-    self.path = uri.path
+  concerning :Url do
+    def url
+      URI.join(user.url, path).to_s
+    end
 
-    write_attribute(:url, v)
+    def url=(v)
+      uri = URI(v)
+      self.path = uri.path
+      self.user = Pants::User.where(host: uri.host).first_or_initialize
+    end
   end
 end

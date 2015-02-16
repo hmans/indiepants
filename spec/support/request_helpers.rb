@@ -11,8 +11,7 @@ module RequestHelpers
       html: document.html,
       data: document.data,
       tags: document.tags,
-      published_at: document.published_at.iso8601,
-      previous_urls: document.previous_urls
+      published_at: document.published_at.iso8601
     }.with_indifferent_access
   end
 end

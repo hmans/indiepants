@@ -18,37 +18,36 @@ ActiveRecord::Schema.define(version: 20150207193808) do
   enable_extension "uuid-ossp"
 
   create_table "pants_documents", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
-    t.string   "url",                        null: false
-    t.string   "host",                       null: false
-    t.string   "path",                       null: false
+    t.uuid     "user_id"
+    t.string   "path",                        null: false
     t.string   "type"
     t.string   "title"
     t.string   "slug"
-    t.string   "previous_urls", default: [],              array: true
+    t.string   "previous_paths", default: [],              array: true
     t.text     "html"
-    t.json     "data",          default: {}, null: false
-    t.string   "tags",          default: [],              array: true
+    t.json     "data",           default: {}, null: false
+    t.string   "tags",           default: [],              array: true
     t.datetime "published_at"
     t.datetime "deleted_at"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   add_index "pants_documents", ["created_at"], name: "index_pants_documents_on_created_at", using: :btree
   add_index "pants_documents", ["deleted_at"], name: "index_pants_documents_on_deleted_at", using: :btree
-  add_index "pants_documents", ["host"], name: "index_pants_documents_on_host", using: :btree
-  add_index "pants_documents", ["previous_urls"], name: "index_pants_documents_on_previous_urls", using: :btree
   add_index "pants_documents", ["published_at"], name: "index_pants_documents_on_published_at", using: :btree
   add_index "pants_documents", ["tags"], name: "index_pants_documents_on_tags", using: :btree
+  add_index "pants_documents", ["user_id", "path"], name: "index_pants_documents_on_user_id_and_path", unique: true, using: :btree
+  add_index "pants_documents", ["user_id", "previous_paths"], name: "index_pants_documents_on_user_id_and_previous_paths", using: :btree
 
-  create_table "pants_users", force: :cascade do |t|
-    t.string   "url",                             null: false
-    t.string   "host",                            null: false
+  create_table "pants_users", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+    t.string   "host",                             null: false
+    t.string   "scheme",          default: "http", null: false
     t.string   "password_digest"
-    t.boolean  "local",           default: false, null: false
+    t.boolean  "local",           default: false,  null: false
     t.string   "name"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
   end
 
   add_index "pants_users", ["host"], name: "index_pants_users_on_host", unique: true, using: :btree
@@ -65,4 +64,5 @@ ActiveRecord::Schema.define(version: 20150207193808) do
   add_index "pants_webmentions", ["source_document_id"], name: "index_pants_webmentions_on_source_document_id", using: :btree
   add_index "pants_webmentions", ["target_document_id"], name: "index_pants_webmentions_on_target_document_id", using: :btree
 
+  add_foreign_key "pants_documents", "pants_users", column: "user_id"
 end

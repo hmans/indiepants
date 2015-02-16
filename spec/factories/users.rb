@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :user, class: "Pants::User" do
     sequence(:name, 'A') { |n| "User #{n}" }
     host { name.parameterize + ".dev" }
-    url  { "http://#{host}"}
+    scheme "http"
     password "secret"
     local true
   end

@@ -55,7 +55,7 @@ module DocumentFetching
     raise "URL mismatch" if url.present? && json["url"] != url
 
     # Copy over the attributes that we consider safe.
-    allowed_attributes = %w[url type title html data tags previous_urls published_at]
+    allowed_attributes = %w[url type title html data tags published_at]
     self.attributes = json.slice(*allowed_attributes)
     self
   end

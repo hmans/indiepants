@@ -1,16 +1,38 @@
 require 'rails_helper'
 
 describe Pants::Document do
-  subject { build_stubbed :document }
-
   it "has a valid default factory" do
-    expect(subject).to be_valid
+    expect(build_stubbed(:document)).to be_valid
   end
 
-  it "is not valid if URL doesn't match user's host" do
-    subject.url = "http://foo/article.html"
-    subject.host = "bar"
-    expect(subject).to_not be_valid
-    expect(subject).to have(1).error_on(:url)
+  describe '#url' do
+    let(:user) { create(:user, host: "foo.com") }
+    subject { create(:document, user: user, path: "/bar") }
+
+    it "returns the complete URL" do
+      expect(subject.url).to eq("http://foo.com/bar")
+    end
+  end
+
+  describe '#url=' do
+    let!(:foo) { create(:user, host: "foo.com") }
+
+    it "stores the path" do
+      subject.url = "http://foo.com/bar"
+      expect(subject.path).to eq("/bar")
+    end
+
+    it "assigns the correct user" do
+      subject.url = "http://foo.com/bar"
+      expect(subject.user).to eq(foo)
+    end
+
+    it "creates a new user if required" do
+      subject.url = "http://bar.com/bar"
+      expect(subject.user).to be_new_record
+      expect(subject.user.host).to eq("bar.com")
+      subject.save!
+      expect(subject.user).to be_persisted
+    end
   end
 end

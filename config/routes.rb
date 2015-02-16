@@ -13,8 +13,7 @@ Rails.application.routes.draw do
   end
 
   # Posts
-  get ':year/:month/:day/:slug' => 'pants/documents#show', as: 'nice_document'
-  get ':id' => 'pants/documents#show', as: 'uid'
+  get '*path' => 'pants/documents#show'
 
   root to: "pants/documents#index"
 end

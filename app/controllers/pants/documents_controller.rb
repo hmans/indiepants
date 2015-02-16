@@ -12,8 +12,8 @@ module Pants
 
     def show
       @document = find_document_by_id ||
-        find_document_by_date_and_slug ||
-        find_document_by_previous_url
+        find_document_by_path ||
+        find_document_by_previous_path
 
       # TODO: serve a proper 404 here
       raise "document not found" if @document.blank?
@@ -26,8 +26,8 @@ module Pants
       end
 
       # Enforce canonical URL
-      if request.format.html? && request.url != @document.url
-        return redirect_to(@document.url, status: 301)
+      if request.format.html? && request.path != @document.path
+        return redirect_to(@document.path, status: 301)
       end
 
       respond_with @document
@@ -82,18 +82,16 @@ module Pants
         .find(params[:id]) if params[:id]
     end
 
-    def find_document_by_date_and_slug
-      date = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
+    def find_document_by_path
       current_site.documents
         .with_deleted
-        .where(published_at: (date.beginning_of_day)..(date.end_of_day))
-        .where(slug: params[:slug]).take
+        .where(path: request.path).take
     end
 
-    def find_document_by_previous_url
+    def find_document_by_previous_path
       current_site.documents
         .with_deleted
-        .where("? = ANY (previous_urls)", request.url).take
+        .where("? = ANY (previous_paths)", request.path).take
     end
   end
 end
