@@ -92,6 +92,7 @@ class Pants::Document < ActiveRecord::Base
       uri = URI(v)
       self.path = uri.path
       self.user = Pants::User.where(host: uri.host).first_or_initialize
+      self.user.scheme = uri.scheme
     end
   end
 end
