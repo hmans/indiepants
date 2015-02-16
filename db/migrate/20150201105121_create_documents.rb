@@ -13,7 +13,7 @@ class CreateDocuments < ActiveRecord::Migration
 
       # Body & Data
       t.text   :html
-      t.json   :data, null: false, default: {}
+      t.jsonb  :data, null: false, default: {}
       t.string :tags, array: true, default: []
 
       # Timestamps
