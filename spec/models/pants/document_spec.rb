@@ -35,4 +35,12 @@ describe Pants::Document do
       expect(subject.user).to be_persisted
     end
   end
+
+  describe '.at_url' do
+    subject { create :document }
+
+    it "returns the document for the specified URL" do
+      expect(Pants::Document.at_url(subject.url)).to eq(subject)
+    end
+  end
 end
