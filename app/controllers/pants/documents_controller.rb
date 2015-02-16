@@ -27,7 +27,7 @@ module Pants
 
       # Enforce canonical URL
       if request.format.html? && request.url != @document.url
-        return redirect_to(@document.path, status: 301)
+        return redirect_to(@document.url, status: 301)
       end
 
       respond_with @document
