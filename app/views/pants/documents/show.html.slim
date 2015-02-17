@@ -2,6 +2,8 @@
   link rel="pants-document" href=(pants_document_path(@document, format: 'json'))
 
 = render @document
+= render 'reactions', document: @document
+
 
 - if logged_in?
   .document-information
