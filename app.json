@@ -12,10 +12,6 @@
     "postdeploy": "bin/rake db:migrate"
   },
   "env": {
-    "SECRET_TOKEN": {
-      "description": "A secret key for verifying the integrity of signed cookies.",
-      "generator": "secret"
-    }
   },
   "success_url": "/"
 }
