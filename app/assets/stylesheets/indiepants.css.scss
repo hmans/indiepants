@@ -88,12 +88,12 @@ blockquote {
   max-width: 700px;
   margin: 0 auto;
   min-height: 100%;
+  padding-top: 30px;
   padding-bottom: 100px;
 }
 
 #content {
   @include collapse-margins;
-  margin-top: 2em;
 }
 
 // FORMS
@@ -131,12 +131,22 @@ input[type="button"], input[type="submit"], button {
   padding: 8px 16px;
 }
 
+form.new_document {
+  margin-bottom: 2em;
+}
+
+// PRIMARY HEADER
+header[role="primary"] {
+  font-weight: bold;
+  font-size: 40px;
+}
+
 
 // PRIMARY NAVIGATION
 
 nav[role="primary"] {
   @extend %fatso;
-  margin: 2em 0;
+  margin-bottom: 2em;
 
   li {
     display: inline-block;

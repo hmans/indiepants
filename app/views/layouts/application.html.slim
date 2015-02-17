@@ -13,6 +13,10 @@ html
 
   body
     #main
+      - if current_site.present?
+        header role="primary"
+          = current_site.name
+          
       nav role="primary"
         ul
           li = link_to "Blog", :root
