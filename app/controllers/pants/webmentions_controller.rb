@@ -8,19 +8,24 @@ module Pants
 
       render text: "OK", status: 202
 
-      Thread.new do
-        process_webmention(@source, @target)
-      end
+      Background.go { process_webmention(@source, @target) }
     end
 
   private
 
     def process_webmention(source, target)
-      # check if target is on this domain
+      # check if target URL is on this domain
       return false unless URI(target).host == current_site.host
 
-      # Create a new Webmention instance and let it handle everything else
-      current_site.webmentions.create!(source, target)
+      # check if target document actually exists
+      target_document = current_site.documents.by_path(URI(target).path).take
+      return false unless target_document
+
+      # discard source document if it doesn't actually contain a link
+      return false unless Fetch.nokogiri(source).css('a').any? { |a| a['href'] == target }
+
+      # fetch source document
+      source_document = Pants::Document.from_url(source)
     end
   end
 end

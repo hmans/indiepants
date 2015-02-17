@@ -22,6 +22,11 @@ describe Pants::Document do
 
     it "doesn't create entries for remote targets" do
       subject.html = %[Here's a link to <a href="http://www.planetcrap.com/">a remote site</a>!]
+
+      # We're expecting to send a webmention to the referenced site
+      expect(subject).to receive(:send_webmention).with("http://www.planetcrap.com/")
+
+      # We're not expecting local links to change
       expect { subject.save! }.to_not change { Pants::Link.count }
     end
   end

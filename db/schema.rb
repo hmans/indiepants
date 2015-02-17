@@ -65,17 +65,5 @@ ActiveRecord::Schema.define(version: 20150216180849) do
 
   add_index "pants_users", ["host"], name: "index_pants_users_on_host", unique: true, using: :btree
 
-  create_table "pants_webmentions", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
-    t.string   "source"
-    t.string   "target"
-    t.uuid     "source_document_id"
-    t.uuid     "target_document_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-  end
-
-  add_index "pants_webmentions", ["source_document_id"], name: "index_pants_webmentions_on_source_document_id", using: :btree
-  add_index "pants_webmentions", ["target_document_id"], name: "index_pants_webmentions_on_target_document_id", using: :btree
-
   add_foreign_key "pants_documents", "pants_users", column: "user_id"
 end

@@ -121,6 +121,7 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.8.2)
     kramdown (1.5.0)
+    link_header (0.0.8)
     loofah (2.0.1)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
@@ -255,6 +256,11 @@ GEM
     uglifier (2.7.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    webmention (0.1.5)
+      httparty (~> 0.13.1)
+      json
+      link_header (~> 0.0.8)
+      nokogiri
     webmock (1.20.4)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
@@ -294,4 +300,5 @@ DEPENDENCIES
   spring-commands-rspec
   turbolinks
   uglifier (>= 1.3.0)
+  webmention
   webmock

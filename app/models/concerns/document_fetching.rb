@@ -7,9 +7,7 @@ concern :DocumentFetching do
     return false if local?
 
     # Load and parse the page
-    Rails.logger.info "Fetching #{url}"
-    doc = HTTParty.get(url, timeout: 10.seconds).to_s
-    page = Nokogiri::HTML(doc)
+    page = Fetch.nokogiri(url)
 
     fetch_from_pants_json(page) ||
       fetch_from_microformats(page) ||
