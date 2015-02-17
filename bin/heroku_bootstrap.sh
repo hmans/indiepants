@@ -14,6 +14,7 @@ fi
 
 heroku create $app_name -r $app_name
 heroku addons:add heroku-postgresql --version=9.4 --app=$app_name
+heroku addons:add mandrill --app=$app_name
 git push $app_name master
 heroku run --app=$app_name bin/rake db:migrate
 heroku info --app=$app_name
