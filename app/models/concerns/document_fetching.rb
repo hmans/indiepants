@@ -1,6 +1,4 @@
-module DocumentFetching
-  extend ActiveSupport::Concern
-
+concern :DocumentFetching do
   def fetch!
     # Check if we have a URL
     raise "no URL given" if url.blank?
@@ -9,12 +7,17 @@ module DocumentFetching
     return false if local?
 
     # Load and parse the page
-    doc = HTTParty.get(url).to_s
+    Rails.logger.info "Fetching #{url}"
+    doc = HTTParty.get(url, timeout: 10.seconds).to_s
     page = Nokogiri::HTML(doc)
 
     fetch_from_pants_json(page) ||
       fetch_from_microformats(page) ||
       fetch_from_magic_extraction(page)
+
+  rescue StandardError => e
+    Rails.logger.error "Error while fetching #{url}: #{e}"
+    false
   end
 
   def fetch_from_pants_json(page)
@@ -22,6 +25,7 @@ module DocumentFetching
       if pants_json_url = link.first.try(:[], "href")
         json = HTTParty.get(URI.join(url, pants_json_url))
         consume_json(json)
+        populate_links_from(html)
 
         :pants
       end
@@ -31,8 +35,9 @@ module DocumentFetching
   def fetch_from_microformats(page)
     if h_entry = page.at_css('.h-entry')
       self.html = h_entry.at_css('.e-content').try { inner_html.strip }
-      self.title = h_entry.at_css('.p-name').try { text }
+      self.title = h_entry.at_css('.p-name').try { text } || page.at_css('head>title').try { text }
       self.published_at = h_entry.at_css('.dt-published').try { attr('datetime') }
+      populate_links_from(h_entry.inner_html)
 
       :microformats
     end
@@ -40,13 +45,16 @@ module DocumentFetching
 
   def fetch_from_magic_extraction(page)
     # TODO: apply some magic extraction algorithm!
-    false
+    # self.html = page.inner_html
+    self.title = page.at_css('head>title').try { text }
+
+    :extraction
   end
 
   # Returns true if it's time to fetch the contents for this post.
   #
   def fetch?
-    new_record? || (remote? && updated_at < 30.minutes.ago)
+    remote? && (new_record? || updated_at < 30.minutes.ago)
   end
 
   def consume_json(json)
@@ -60,21 +68,12 @@ module DocumentFetching
     self
   end
 
-  module ClassMethods
-    def at_url(url)
-      # TODO: we can probably change this to a single query.
-      #
-      uri = URI(url)
-      if user = Pants::User.where(host: uri.host).take
-        user.documents.where(path: uri.path).take
-      end
-    end
-
+  class_methods do
     # Update/create a post given a URL.
     #
-    def from_url(url)
+    def from_url(url, fetch: true)
       (at_url(url) || new(url: url)).tap do |post|
-        if post.fetch?
+        if fetch && post.fetch?
           post.fetch!
           post.save!
         end

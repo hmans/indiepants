@@ -14,7 +14,7 @@ feature "creating a post" do
     expect { click_button "Create Post" }
       .to change { Pants::Document.count }.by(1)
 
-    document = user.documents.latest.first
+    document = user.documents.newest.first
 
     # The document's type should be set to the default pants.post
     expect(document.type).to eq('pants.post')

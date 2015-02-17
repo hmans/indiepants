@@ -5,7 +5,7 @@ module Pants
     before_action :ensure_logged_in!, except: [:show, :index]
 
     def index
-      @documents = current_site.documents.latest
+      @documents = current_site.documents.newest
 
       respond_with @documents do |format|
         format.atom
@@ -33,6 +33,11 @@ module Pants
       end
 
       respond_with @document
+    end
+
+    def remote
+      @document = Pants::Document.from_url("http://#{params[:url]}")
+      render :show
     end
 
     def new

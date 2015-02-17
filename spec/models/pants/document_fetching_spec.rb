@@ -2,6 +2,11 @@ require 'rails_helper'
 
 describe Pants::Document do
   describe '#fetch!' do
+    before do
+      stub_request(:get, "http://www.planetcrap.com/")
+        .to_return(status: 200, body: "")
+    end
+
     context "when the remote document is pants-document enabled" do
       let(:html_body) do
         <<-EOS
@@ -13,7 +18,7 @@ describe Pants::Document do
           </head>
           <body>
             <article class="h-entry">
-              <p>Pants is awesome, Pants is great!</p>
+              <p>Pants is awesome, Pants is great! <a href="http://www.planetcrap.com">PlanetCrap</a>, woohoo!</p>
             </article>
           </body>
         </html>
@@ -25,7 +30,7 @@ describe Pants::Document do
           url: "http://remote-host/html",
           type: "pants.post",
           title: "PSA",
-          html: "<p>Pants is awesome, Pants is great!</p>",
+          html: %[<p>Pants is awesome, Pants is great! <a href="http://www.planetcrap.com">PlanetCrap</a>, woohoo!</p>],
           data: { foo: "bar" },
           tags: ["foo", "bar"],
           published_at: 12.days.ago.iso8601
@@ -63,7 +68,7 @@ describe Pants::Document do
               <h3 class="p-name">Public Service Announcement</h3>
               <time class="dt-published" datetime="2015-01-22 19:22:13">22.01.15 19:22</time>
               <div class="e-content">
-                <p>This is a post without pants-document JSON.</p>
+                <p>This is a post without pants-document JSON. <a href="http://www.planetcrap.com">PlanetCrap</a>, woohoo!</p>
               </div>
             </article>
           </body>
@@ -79,7 +84,7 @@ describe Pants::Document do
       it "fetches the document from the h-entry" do
         document = Pants::Document.new(url: "http://remote-host/html")
         expect(document.fetch!).to eq(:microformats)
-        expect(document.html).to eq("<p>This is a post without pants-document JSON.</p>")
+        expect(document.html).to eq(%[<p>This is a post without pants-document JSON. <a href="http://www.planetcrap.com">PlanetCrap</a>, woohoo!</p>])
         expect(document.title).to eq("Public Service Announcement")
         expect(document.published_at).to eq("2015-01-22 19:22:13")
       end

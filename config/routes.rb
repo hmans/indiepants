@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
   namespace :pants do
-    resources :documents
+    resources :documents do
+      collection do
+        # Remote post viewer
+        get 'remote/:url' => 'documents#remote', constraints: { url: /.+/ }
+      end
+    end
+
     resources :webmentions
 
     # Setup

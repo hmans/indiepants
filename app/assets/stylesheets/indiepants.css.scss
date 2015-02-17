@@ -1,11 +1,11 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
+@import url(//fonts.googleapis.com/css?family=Roboto:400,700,400italic,700italic,300);
 
 @import "compass";
 @import "compass/reset";
 
 // CONFIGURATION
 
-$font: 15px "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+$font: 17px/1.4 "Roboto", Helvetica, Arial, sans-serif;
 $background-color: #fff;
 $color: #444;
 $link-color: #f93;
@@ -150,5 +150,7 @@ article.h-entry {
 
 .document-information {
   color: $light-color;
+  a { color: inherit }
   margin-top: 3em;
+
 }

@@ -5,9 +5,22 @@
 
 - if logged_in?
   .document-information
-    p
-      => link_to "Edit this Post", edit_pants_document_path(@document)
-      => link_to "Delete this Post", pants_document_path(@document), method: 'delete', data: { confirm: "Are you sure?" }
+    -if @document.local?
+      p
+        => link_to "Edit this Post", edit_pants_document_path(@document)
+        => link_to "Delete this Post", pants_document_path(@document), method: 'delete', data: { confirm: "Are you sure?" }
     p
       ' This is a <strong>#{@document.type}</strong> with the ID <strong>#{@document.id}</strong>.
       ' Its current canonical URL is <strong>#{@document.url}</strong>.
+
+    - if (links = @document.outgoing_links).any?
+      h3 Outgoing Links
+      ul
+        - links.newest.each do |link|
+          li = link_to link.target.title, link.target.url
+
+    - if (links = @document.incoming_links).any?
+      h3 Incoming Links
+      ul
+        - links.newest.each do |link|
+          li = link_to link.source.title, link.source.url

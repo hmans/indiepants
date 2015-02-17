@@ -1,6 +1,4 @@
-module DocumentTypeSupport
-  extend ActiveSupport::Concern
-
+concern :DocumentTypeSupport do
   # We want to use ActiveRecord's STI, but not with Ruby class names. This
   # is for two reasons:
   #
@@ -18,7 +16,7 @@ module DocumentTypeSupport
   #
   # It's a bit nasty, but it works. Hooray!
   #
-  module ClassMethods
+  class_methods do
     def find_sti_class(name)
       klass = name.gsub('.', '/').classify.safe_constantize
 

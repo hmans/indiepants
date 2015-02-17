@@ -1,10 +1,10 @@
 class Pants::Document < ActiveRecord::Base
   acts_as_paranoid
 
+  include Scopes
   include DocumentTypeSupport
   include DocumentFetching
-
-  scope :latest, -> { order("created_at DESC") }
+  include DocumentLinks
 
   belongs_to :user,
     class_name: "Pants::User",
@@ -48,7 +48,7 @@ class Pants::Document < ActiveRecord::Base
   end
 
   def generate_slug
-    SecureRandom.hex(6)
+    SecureRandom.hex(12)
   end
 
   # Generate a unique slug by adding a numerical, incremental suffix
@@ -93,6 +93,16 @@ class Pants::Document < ActiveRecord::Base
       self.path = uri.path
       self.user = Pants::User.where(host: uri.host).first_or_initialize
       self.user.scheme = uri.scheme
+    end
+
+    class_methods do
+      def at_url(url)
+        uri = URI(url)
+        if user = Pants::User.where(host: uri.host).take
+          user.documents.where(path: uri.path).take ||
+            user.documents.where("? = ANY (previous_paths)", uri.path).take
+        end
+      end
     end
   end
 end

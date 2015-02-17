@@ -15,5 +15,7 @@ if Rails.env.development?
   Pants::Document.create!    user: alice, html: "<p>This is a post from an outside source (or from an unknown post type.) It comes with HTML that is hopefully sanitized.</p>"
   Pants::Post.create! user: alice, body: "Hi, I'm Alice! \o/"
 
-  Pants::Post.create! user: bob, body: "Hello, I am Bob."
+  bobs_post = Pants::Post.create! user: bob, body: "Hello, I am Bob."
+
+  Pants::Post.create! user: alice, body: "I like linking to www.planetcrap.com. I also like Bob, and linking to [his posts](#{bobs_post.url}). Yay!"
 end
