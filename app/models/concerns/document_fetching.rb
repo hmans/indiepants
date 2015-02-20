@@ -23,7 +23,6 @@ concern :DocumentFetching do
       if pants_json_url = link.first.try(:[], "href")
         json = HTTParty.get(URI.join(url, pants_json_url))
         consume_json(json)
-        populate_links_from(html)
 
         :pants
       end
@@ -36,7 +35,6 @@ concern :DocumentFetching do
       self.title = h_entry.at_css('.p-name').try { text } || page.at_css('head>title').try { text }
       self.published_at = h_entry.at_css('.dt-published').try { attr('datetime') }
       self.uid = h_entry.at_css('.u-uid').try { attr('href') }
-      populate_links_from(h_entry.inner_html)
 
       :microformats
     end

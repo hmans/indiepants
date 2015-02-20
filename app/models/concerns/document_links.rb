@@ -11,13 +11,11 @@ concern :DocumentLinks do
       dependent: :destroy
 
     after_save do
-      if local?
-        Background.go { populate_links_from(html) }
-      end
+      Background.go { populate_links! }
     end
   end
 
-  def populate_links_from(html)
+  def populate_links!
     # Remember these for later
     marked_for_deletion = outgoing_links.pluck(:id)
 
