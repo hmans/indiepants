@@ -17,7 +17,7 @@ module Pants
       @user = User.local.build
 
       if request.post?
-        @user.attributes = user_params.merge(host: request.host)
+        @user.attributes = user_params.merge(url: request.url)
         if @user.save
           login_user @user
           redirect_to :root
