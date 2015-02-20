@@ -41,17 +41,17 @@ ActiveRecord::Schema.define(version: 20150216180849) do
   add_index "pants_documents", ["user_id", "previous_paths"], name: "index_pants_documents_on_user_id_and_previous_paths", using: :btree
 
   create_table "pants_links", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
-    t.uuid     "source_id",   null: false
-    t.string   "source_type", null: false
-    t.uuid     "target_id",   null: false
-    t.string   "target_type", null: false
-    t.string   "rel"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.uuid     "source_id",                null: false
+    t.string   "source_type",              null: false
+    t.uuid     "target_id",                null: false
+    t.string   "target_type",              null: false
+    t.string   "rels",        default: [],              array: true
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
-  add_index "pants_links", ["source_id", "source_type", "target_id", "target_type", "rel"], name: "source_and_target", using: :btree
-  add_index "pants_links", ["target_id", "target_type", "rel"], name: "index_pants_links_on_target_id_and_target_type_and_rel", using: :btree
+  add_index "pants_links", ["source_id", "source_type", "target_id", "target_type", "rels"], name: "source_and_target", using: :btree
+  add_index "pants_links", ["target_id", "target_type", "rels"], name: "index_pants_links_on_target_id_and_target_type_and_rels", using: :btree
 
   create_table "pants_users", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.string   "host",                             null: false

@@ -1,16 +1,16 @@
 - links = document.incoming_links
 
-- if (likes = links.where(rel: "like")).any?
+- if (likes = links.rel("like")).any?
   h3 Likes:
   - likes.each do |link|
     p = link_to link.source.title, link.source.url
 
-- if (replies = links.where(rel: "reply")).any?
+- if (replies = links.rel("reply")).any?
   h3 Replies:
   - replies.each do |link|
     = render link.source
 
-- if (others = links.where(rel: nil)).any?
+- if (others = links.no_rel).any?
   h3 Other documents linking here:
   - others.each do |link|
     p = link_to link.source.title, link.source.url

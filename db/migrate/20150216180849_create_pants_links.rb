@@ -10,13 +10,13 @@ class CreatePantsLinks < ActiveRecord::Migration
       t.string :target_type, null: false
 
       # etc.
-      t.string :rel
+      t.string :rels, array: true, default: []
       t.timestamps null: false
     end
 
-    add_index :pants_links, [:source_id, :source_type, :target_id, :target_type, :rel],
+    add_index :pants_links, [:source_id, :source_type, :target_id, :target_type, :rels],
       name: :source_and_target
 
-    add_index :pants_links, [:target_id, :target_type, :rel]
+    add_index :pants_links, [:target_id, :target_type, :rels]
   end
 end

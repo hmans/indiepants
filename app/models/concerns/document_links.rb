@@ -22,14 +22,28 @@ concern :DocumentLinks do
     marked_for_deletion = outgoing_links.pluck(:id)
 
     # create new links depending on content
-    Nokogiri::HTML(html).css('a').each do |a|
+    Nokogiri::HTML(html).css('a, link').each do |el|
       link = Pants::Link.new
       link.source = self
-      link.rel    = a['rel']   # TODO: or analyze CSS
+
+      classes = el['class'].try(:split) || []
+      rels    = el['rel'].try(:split) || []
+
+      if classes.include?("u-in-reply-to") || rels.include?('in-reply-to')
+        link.rels << "reply"
+      end
+
+      if classes.include?("u-like-of")
+        link.rels << "like"
+      end
+      
+      if classes.include?("u-repost-of")
+        link.rels << "repost"
+      end
 
       # Find an existing document matching the given URL, or create
       # a new, temporary one (we're not saving.)
-      target = Pants::Document.at_url(a['href']) || Pants::Document.new(url: a['href'])
+      target = Pants::Document.at_url(el['href']) || Pants::Document.new(url: el['href'])
 
       # We're only interested in links to existing local documents.
       if target.local? && target.persisted?
