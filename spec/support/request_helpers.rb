@@ -6,6 +6,7 @@ module RequestHelpers
   def expected_document_json(document)
     {
       url: document.url,
+      uid: document.uid,
       type: document.type,
       title: document.title,
       html: document.html,

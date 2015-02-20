@@ -35,6 +35,7 @@ concern :DocumentFetching do
       self.html = h_entry.at_css('.e-content').try { inner_html.strip }
       self.title = h_entry.at_css('.p-name').try { text } || page.at_css('head>title').try { text }
       self.published_at = h_entry.at_css('.dt-published').try { attr('datetime') }
+      self.uid = h_entry.at_css('.u-uid').try { attr('href') }
       populate_links_from(h_entry.inner_html)
 
       :microformats
@@ -61,7 +62,7 @@ concern :DocumentFetching do
     raise "URL mismatch" if url.present? && json["url"] != url
 
     # Copy over the attributes that we consider safe.
-    allowed_attributes = %w[url type title html data tags published_at]
+    allowed_attributes = %w[url uid type title html data tags published_at]
     self.attributes = json.slice(*allowed_attributes)
     self
   end

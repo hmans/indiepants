@@ -166,6 +166,10 @@ article.h-entry {
   }
 }
 
+.document-attributes {
+  display: none;
+}
+
 .document-information {
   color: $light-color;
   a { color: inherit }

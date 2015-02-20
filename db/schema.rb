@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20150216180849) do
     t.string   "path",                        null: false
     t.string   "type"
     t.string   "title"
+    t.text     "uid"
     t.string   "slug"
     t.string   "previous_paths", default: [],              array: true
     t.text     "html"
@@ -37,6 +38,7 @@ ActiveRecord::Schema.define(version: 20150216180849) do
   add_index "pants_documents", ["deleted_at"], name: "index_pants_documents_on_deleted_at", using: :btree
   add_index "pants_documents", ["published_at"], name: "index_pants_documents_on_published_at", using: :btree
   add_index "pants_documents", ["tags"], name: "index_pants_documents_on_tags", using: :btree
+  add_index "pants_documents", ["uid"], name: "index_pants_documents_on_uid", using: :btree
   add_index "pants_documents", ["user_id", "path"], name: "index_pants_documents_on_user_id_and_path", unique: true, using: :btree
   add_index "pants_documents", ["user_id", "previous_paths"], name: "index_pants_documents_on_user_id_and_previous_paths", using: :btree
 

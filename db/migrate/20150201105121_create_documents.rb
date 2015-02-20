@@ -6,6 +6,7 @@ class CreateDocuments < ActiveRecord::Migration
       t.string :path, null: false
       t.string :type
       t.string :title
+      t.text   :uid
 
       # Pants specific
       t.string :slug
@@ -25,6 +26,7 @@ class CreateDocuments < ActiveRecord::Migration
     add_index :pants_documents, [:user_id, :path], unique: true
     add_index :pants_documents, [:user_id, :previous_paths]
     add_index :pants_documents, :tags
+    add_index :pants_documents, :uid
 
     add_foreign_key :pants_documents, :pants_users, column: :user_id
   end

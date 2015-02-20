@@ -28,6 +28,7 @@ describe Pants::Document do
       let(:json) do
         {
           url: "http://remote-host/html",
+          uid: "http://remote-host/html-uid",
           type: "pants.post",
           title: "PSA",
           html: %[<p>Pants is awesome, Pants is great! <a href="http://www.planetcrap.com">PlanetCrap</a>, woohoo!</p>],
@@ -49,7 +50,7 @@ describe Pants::Document do
         document = Pants::Document.new(url: "http://remote-host/html")
         expect(document.fetch!).to eq(:pants)
 
-        %w[url type title html data tags published_at].each do |name|
+        %w[url uid type title html data tags published_at].each do |name|
           expect(document.send(name)).to eq(json[name])
         end
       end
@@ -70,6 +71,7 @@ describe Pants::Document do
               <div class="e-content">
                 <p>This is a post without pants-document JSON. <a href="http://www.planetcrap.com">PlanetCrap</a>, woohoo!</p>
               </div>
+              <a href="http://remote-host/uid" class="u-uid">Permalink</a>
             </article>
           </body>
         </html>
@@ -87,6 +89,7 @@ describe Pants::Document do
         expect(document.html).to eq(%[<p>This is a post without pants-document JSON. <a href="http://www.planetcrap.com">PlanetCrap</a>, woohoo!</p>])
         expect(document.title).to eq("Public Service Announcement")
         expect(document.published_at).to eq("2015-01-22 19:22:13")
+        expect(document.uid).to eq("http://remote-host/uid")
       end
     end
 

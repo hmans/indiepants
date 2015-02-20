@@ -34,6 +34,12 @@ class Pants::Document < ActiveRecord::Base
     end
   end
 
+  after_create do
+    if local?
+      update_columns(uid: URI.join(user.url, "/pants/documents/#{id}").to_s)
+    end
+  end
+
   validates :slug,
     presence: true,
     uniqueness: { scope: :user_id },
@@ -81,6 +87,12 @@ class Pants::Document < ActiveRecord::Base
 
   def remote?
     !local?
+  end
+
+  concerning :Uid do
+    def uid=(v)
+      write_attribute(:uid, URI.join(user.url, v))
+    end
   end
 
   concerning :Url do
