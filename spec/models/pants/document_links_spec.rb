@@ -7,12 +7,11 @@ describe Pants::Document do
     let(:newest_link) { Pants::Link.newest.take }
 
     it "automatically populates its outgoing links" do
-      subject.html = %[Here's a <a href="#{other_document.url}" class="u-in-reply-to">link</a>!]
+      subject.html = %[Here's a <a href="#{other_document.url}">link</a>!]
 
       expect { subject.save! }.to change { Pants::Link.count }.by(1)
       expect(newest_link.source).to eq(subject)
       expect(newest_link.target.url).to eq(other_document.url)
-      expect(newest_link.rels).to eq(["reply"])
     end
 
     it "correctly detects a.u-in-reply-to replies" do
@@ -39,6 +38,11 @@ describe Pants::Document do
                        I'm reposting it!]
       subject.save!
       expect(newest_link.rels).to eq(["repost"])
+    end
+
+    it "doesn't create multiple Link instances for the same target" do
+      subject.html = %[Here's a <a href="#{other_document.url}">link</a>, and <a href="#{other_document.url}">another link</a>!]
+      expect { subject.save! }.to change { Pants::Link.count }.by(1)
     end
 
     it "doesn't create entries for unknown local targets" do

@@ -23,11 +23,17 @@ concern :DocumentLinks do
 
     # create new links depending on content
     Nokogiri::HTML(html).css('a, link').each do |el|
-      link = Pants::Link.new
-      link.source = self
+      # Find an existing document matching the given URL, or create
+      # a new, temporary one (we're not saving.)
+      target = Pants::Document.at_url(el['href']) || Pants::Document.new(url: el['href'])
 
-      classes = el['class'].try(:split) || []
-      rels    = el['rel'].try(:split) || []
+      link = outgoing_links.where(target: target).first_or_initialize
+      # link.source = self
+
+      # Analyze the actual HTML link
+      classes   = el['class'].try(:split) || []
+      rels      = el['rel'].try(:split) || []
+      link.rels = []
 
       if classes.include?("u-in-reply-to") || rels.include?('in-reply-to')
         link.rels << "reply"
@@ -36,14 +42,10 @@ concern :DocumentLinks do
       if classes.include?("u-like-of")
         link.rels << "like"
       end
-      
+
       if classes.include?("u-repost-of")
         link.rels << "repost"
       end
-
-      # Find an existing document matching the given URL, or create
-      # a new, temporary one (we're not saving.)
-      target = Pants::Document.at_url(el['href']) || Pants::Document.new(url: el['href'])
 
       # We're only interested in links to existing local documents.
       if target.local? && target.persisted?
