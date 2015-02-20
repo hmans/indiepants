@@ -59,7 +59,7 @@ concern :DocumentFetching do
   def consume_json(json)
     # If this document already has a URL, check if it's equal to the URL
     # given in the JSON.
-    raise "URL mismatch" if url.present? && json["url"] != url
+    raise "host mismatch" if user.present? && url.present? && URI(url).host != user.host
 
     # Copy over the attributes that we consider safe.
     allowed_attributes = %w[url uid type title html data tags published_at]
