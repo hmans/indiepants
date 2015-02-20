@@ -89,6 +89,27 @@ class Pants::Document < ActiveRecord::Base
     !local?
   end
 
+  concerning :Deduplication do
+    included do
+      after_save :deduplicate_via_path
+      after_save :deduplicate_via_uid
+    end
+
+    def deduplicate_via_path
+      # Delete all other documents with the same user and path (but not this one)
+      if remote? && path.present?
+        user.documents.where(path: path).where("id != ?", id).delete_all
+      end
+    end
+
+    def deduplicate_via_uid
+      # Delete all other documents with the same user and UID (but not this one)
+      if remote? && uid.present?
+        user.documents.where(uid: uid).where("id != ?", id).delete_all
+      end
+    end
+  end
+
   concerning :Uid do
     def uid=(v)
       write_attribute(:uid, URI.join(user.url, v))
