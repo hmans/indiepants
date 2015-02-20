@@ -8,5 +8,5 @@ class Pants::Link < ActiveRecord::Base
     polymorphic: true
 
   scope :rel, ->(rel) { where("? = ANY(rels)", rel) }
-  scope :no_rel, -> { where("array_length(rels, 1) = 0") }
+  scope :no_rel, -> { where("array_length(rels, 1) is null") }
 end
