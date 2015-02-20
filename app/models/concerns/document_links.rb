@@ -26,9 +26,7 @@ concern :DocumentLinks do
       # Find an existing document matching the given URL, or create
       # a new, temporary one (we're not saving.)
       target = Pants::Document.at_url(el['href']) || Pants::Document.new(url: el['href'])
-
-      link = outgoing_links.where(target: target).first_or_initialize
-      # link.source = self
+      link   = Pants::Link.where(source: self, target: target).first_or_initialize
 
       # Analyze the actual HTML link
       classes   = el['class'].try(:split) || []
