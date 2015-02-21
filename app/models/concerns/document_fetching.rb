@@ -1,97 +1,53 @@
 concern :DocumentFetching do
-  def fetch!
-    # Check if we have a URL
-    raise "no URL given" if url.blank?
-
-    # Abort if we're local (no need to fetch)
-    return false if local?
-
-    # Load and parse the page
-    page = Fetch.nokogiri(url)
-
-    fetch_from_pants_json(page) ||
-      fetch_from_microformats(page) ||
-      fetch_from_magic_extraction(page)
-
-  rescue StandardError => e
-    Rails.logger.error "Error while fetching #{url}: #{e}"
-    false
-  end
-
-  def fetch_from_pants_json(page)
-    if link = page.css("head>link[rel=pants-document]")
-      if pants_json_url = link.first.try(:[], "href")
-        json = HTTParty.get(URI.join(url, pants_json_url))
-        consume_json(json)
-
-        :pants
-      end
-    end
-  end
-
-  def fetch_from_microformats(page)
-    if h_entry = page.at_css('.h-entry')
-      self.html = h_entry.at_css('.e-content').try { inner_html.strip }
-      self.title = h_entry.at_css('.p-name').try { text } || page.at_css('head>title').try { text }
-      self.published_at = h_entry.at_css('.dt-published').try { attr('datetime') }
-      self.uid = h_entry.at_css('.u-uid').try { attr('href') }
-
-      :microformats
-    end
-  end
-
-  def fetch_from_magic_extraction(page)
-    # TODO: apply some magic extraction algorithm!
-    # self.html = page.inner_html
-    self.title = page.at_css('head>title').try { text }
-
-    :extraction
-  end
-
   # Returns true if it's time to fetch the contents for this post.
   #
   def fetch?
-    remote?   #  && (new_record? || updated_at < 30.minutes.ago)
+    remote?
   end
 
-  def consume_json(json)
-    # If this document already has a URL, check if it's equal to the URL
-    # given in the JSON.
-    raise "host mismatch" if user.present? && url.present? && URI(url).host != user.host
-
-    # Copy over the attributes that we consider safe.
-    allowed_attributes = %w[url uid type title html data tags published_at]
-    self.attributes = json.slice(*allowed_attributes)
-    self
+  def fetch!
+    if remote? && data = Fetch[url].data
+      self.attributes = data
+    end
   end
 
   class_methods do
     # Update/create a post given a URL.
     #
     def from_url(url)
-      doc = find_by_url(url) || new(url: url)
+      user  = Pants::User[URI(url).host]
 
-      if doc.remote?
-        doc.fetch!
+      # For local users, just do a database lookup.
+      if user.try(:local?)
+        find_by_url(url)
 
-        if original = doc.find_original
-          Rails.logger.warn "Found original document for UID #{doc.uid}"
+      # For everybody else, fetch the data.
+      else
+        fetch = Fetch[url]
 
-          # Get rid of this document
-          doc.really_destroy!
+        if fetch.success? && data = fetch.data
+          if user
+            # If data contains a UID, look up the document by UID.
+            doc = user.documents.where(uid: data['uid']).take if data['uid'].present?
 
-          # Re-fetch the original post. I guess we could also just copy
-          # the attributes here?
-          original.fetch!
+            # Otherwise, look up the document by its URL.
+            doc ||= user.documents.where(path: fetch.uri.path).take
+          end
 
-          # Continue with the original post
-          doc = original
+          # Otherwise, create a new document.
+          doc ||= Pants::Document.new
+
+          # Apply attributes
+          doc.url = url     # The URL may have changed due to redirects
+          doc.consume(data) # This also may contain a new URL
+          doc.save!
+          doc
+        else
+          # The document could not be loaded due to errors (404 et al).
+          Rails.logger.error "Tried to load a document for URL #{url}, but failed. (#{fetch.response.code})"
+          nil
         end
-
-        doc.save!
       end
-
-      doc
     end
   end
 end

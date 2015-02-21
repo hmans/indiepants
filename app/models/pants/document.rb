@@ -1,9 +1,10 @@
 class Pants::Document < ActiveRecord::Base
+  CONSUMABLE_ATTRIBUTES = %w[url uid type title html data tags published_at]
+
   acts_as_paranoid
 
   include Scopes
   include DocumentTypeSupport
-  include DocumentDeduplication
   include DocumentFetching
   include DocumentLinks
 
@@ -82,6 +83,14 @@ class Pants::Document < ActiveRecord::Base
       slug].join("/")
   end
 
+  def consume(attributes)
+    attributes = attributes.with_indifferent_access
+
+    # Copy over the attributes that we consider safe.
+    self.attributes = attributes.slice(*CONSUMABLE_ATTRIBUTES)
+    self
+  end
+
   def local?
     user.try(:local?)
   end
@@ -92,7 +101,7 @@ class Pants::Document < ActiveRecord::Base
 
   concerning :Uid do
     def uid=(v)
-      write_attribute(:uid, URI.join(user.url, v))
+      write_attribute(:uid, v.presence && URI.join(user.url, v))
     end
   end
 

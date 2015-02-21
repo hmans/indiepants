@@ -22,7 +22,7 @@ module Pants
       return false unless target_document
 
       # discard source document if it doesn't actually contain a link
-      return false unless Fetch.nokogiri(source).css('a').any? { |a| a['href'] == target }
+      return false unless Fetch[source].nokogiri.css('a').any? { |a| a['href'] == target }
 
       # fetch source document
       source_document = Pants::Document.from_url(source)

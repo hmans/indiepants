@@ -33,5 +33,11 @@ module Pants
     def remote?
       !local?
     end
+
+    class << self
+      def [](host)
+        where(host: host).take
+      end
+    end
   end
 end

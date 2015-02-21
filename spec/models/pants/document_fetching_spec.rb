@@ -2,99 +2,59 @@ require 'rails_helper'
 
 describe Pants::Document do
   describe '#fetch!' do
-    before do
-      stub_request(:get, "http://www.planetcrap.com/")
-        .to_return(status: 200, body: "")
-    end
+    subject { create :document }
 
-    context "when the remote document is pants-document enabled" do
-      let(:html_body) do
-        <<-EOS
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <title>PSA</title>
-            <link href="/json" rel="pants-document" />
-          </head>
-          <body>
-            <article class="h-entry">
-              <p>Pants is awesome, Pants is great! <a href="http://www.planetcrap.com">PlanetCrap</a>, woohoo!</p>
-            </article>
-          </body>
-        </html>
-        EOS
-      end
-
-      let(:json) do
-        {
-          url: "http://remote-host/html",
-          uid: "http://remote-host/html-uid",
-          type: "pants.post",
-          title: "PSA",
-          html: %[<p>Pants is awesome, Pants is great! <a href="http://www.planetcrap.com">PlanetCrap</a>, woohoo!</p>],
-          data: { foo: "bar" },
-          tags: ["foo", "bar"],
-          published_at: 12.days.ago.iso8601
-        }.with_indifferent_access
-      end
-
+    context "when the document is remote" do
       before do
-        stub_request(:get, "http://remote-host/html")
-          .to_return(status: 200, body: html_body, headers: { "Content_Type": "text/html" })
-
-        stub_request(:get, "http://remote-host/json")
-          .to_return(status: 200, body: json.to_json, headers: { "Content_Type": "application/json" })
+        allow(subject).to receive(:remote?).and_return(true)
       end
 
-      it "fetches the document via the provided pants-document JSON" do
-        document = Pants::Document.new(url: "http://remote-host/html")
-        expect(document.fetch!).to eq(:pants)
+      it "invokes Fetch to update its data" do
+        data = double
 
-        %w[url uid type title html data tags published_at].each do |name|
-          expect(document.send(name)).to eq(json[name])
-        end
+        expect(Fetch).to receive(:[])
+          .with(subject.url)
+          .and_return(double(data: data))
+
+        expect(subject).to receive(:attributes=)
+          .with(data)
+
+        subject.fetch!
       end
     end
 
-    context "when the remote document has a h-entry" do
-      let(:html_body) do
-        <<-EOS
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <title>PSA</title>
-          </head>
-          <body>
-            <article class="h-entry">
-              <h3 class="p-name">Public Service Announcement</h3>
-              <time class="dt-published" datetime="2015-01-22 19:22:13">22.01.15 19:22</time>
-              <div class="e-content">
-                <p>This is a post without pants-document JSON. <a href="http://www.planetcrap.com">PlanetCrap</a>, woohoo!</p>
-              </div>
-              <a href="http://remote-host/uid" class="u-uid">Permalink</a>
-            </article>
-          </body>
-        </html>
-        EOS
-      end
-
+    context "when the document is local" do
       before do
-        stub_request(:get, "http://remote-host/html")
-          .to_return(status: 200, body: html_body, headers: { "Content_Type": "text/html" })
+        allow(subject).to receive(:remote?).and_return(false)
       end
 
-      it "fetches the document from the h-entry" do
-        document = Pants::Document.new(url: "http://remote-host/html")
-        expect(document.fetch!).to eq(:microformats)
-        expect(document.html).to eq(%[<p>This is a post without pants-document JSON. <a href="http://www.planetcrap.com">PlanetCrap</a>, woohoo!</p>])
-        expect(document.title).to eq("Public Service Announcement")
-        expect(document.published_at).to eq("2015-01-22 19:22:13")
-        expect(document.uid).to eq("http://remote-host/uid")
+      it "does nothing" do
+        expect(Fetch).to_not receive(:[]).with(subject.url)
+        subject.fetch!
+      end
+    end
+  end
+
+  describe '.from_url' do
+    let(:user) { create :user, host: "alice" }
+    let(:document) { create :document, user: user }
+
+    context "when the URL is local" do
+      it "retrieves the post from the database" do
+        expect(Pants::Document.from_url(document.url)).to eq(document)
       end
     end
 
-    context "when the remote document is simple HTML" do
-      it "performs crazy magicks"
+    context "when the URL is remote" do
+      before do
+        stub_request(:get, "http://bob/foo")
+          .to_return(status: 200, body: html_document_with_hentry)
+      end
+
+      it "looks for the correct post to update (or creates a new one)" do
+        expect { Pants::Document.from_url("http://bob/foo") }
+          .to change { Pants::Document.count }.by(1)
+      end
     end
   end
 end
