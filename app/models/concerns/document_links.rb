@@ -11,7 +11,7 @@ concern :DocumentLinks do
       dependent: :destroy
 
     after_save do
-      if html_changed? || title_changed? || url_changed?
+      if html_changed? || title_changed? || path_changed?
         Background.go { populate_links! }
       end
     end
