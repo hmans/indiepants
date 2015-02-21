@@ -121,14 +121,14 @@ class Pants::Document < ActiveRecord::Base
     end
 
     class_methods do
-      def by_path(path)
-        where("path = ? OR ? = ANY (previous_paths)", path, path)
+      def find_by_path_or_previous_path(path)
+        where(path: path).take || where("? = ANY (previous_paths)", path).take
       end
 
       def at_url(url)
         uri = URI(url)
         if user = Pants::User.where(host: uri.host).take
-          user.documents.by_path(uri.path).take
+          user.documents.find_by_path_or_previous_path(uri.path)
         end
       end
     end

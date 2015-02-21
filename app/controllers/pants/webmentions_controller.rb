@@ -18,7 +18,7 @@ module Pants
       return false unless URI(target).host == current_site.host
 
       # check if target document actually exists
-      target_document = current_site.documents.by_path(URI(target).path).take
+      target_document = current_site.documents.find_by_path_or_previous_path(URI(target).path)
       return false unless target_document
 
       # discard source document if it doesn't actually contain a link
