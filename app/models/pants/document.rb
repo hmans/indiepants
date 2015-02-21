@@ -125,7 +125,7 @@ class Pants::Document < ActiveRecord::Base
         where(path: path).take || where("? = ANY (previous_paths)", path).take
       end
 
-      def at_url(url)
+      def find_by_url(url)
         uri = URI(url)
         if user = Pants::User.where(host: uri.host).take
           user.documents.find_by_path_or_previous_path(uri.path)

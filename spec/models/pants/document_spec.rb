@@ -36,15 +36,15 @@ describe Pants::Document do
     end
   end
 
-  describe '.at_url' do
+  describe '.find_by_url' do
     subject { create :document, path: '/foo', previous_paths: ['/bar'] }
 
     it "returns the document for the specified URL" do
-      expect(Pants::Document.at_url(subject.url)).to eq(subject)
+      expect(Pants::Document.find_by_url(subject.url)).to eq(subject)
     end
 
     it "finds documents that previously held the URL" do
-      expect(Pants::Document.at_url(URI.join(subject.url, '/bar'))).to eq(subject)
+      expect(Pants::Document.find_by_url(URI.join(subject.url, '/bar'))).to eq(subject)
     end
   end
 end

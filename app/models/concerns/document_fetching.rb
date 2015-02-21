@@ -69,7 +69,7 @@ concern :DocumentFetching do
     # Update/create a post given a URL.
     #
     def from_url(url, fetch: true)
-      (at_url(url) || new(url: url)).tap do |post|
+      (find_by_url(url) || new(url: url)).tap do |post|
         if fetch && post.fetch?
           post.fetch!
           post.save!
