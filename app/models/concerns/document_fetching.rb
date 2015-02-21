@@ -68,13 +68,28 @@ concern :DocumentFetching do
   class_methods do
     # Update/create a post given a URL.
     #
-    def from_url(url, fetch: true)
-      (find_by_url(url) || new(url: url)).tap do |post|
-        if fetch && post.fetch?
-          post.fetch!
-          post.save!
+    def from_url(url)
+      doc = find_by_url(url) || new(url: url)
+
+      if doc.remote?
+        doc.fetch!
+
+        if original = doc.find_original
+          # Get rid of this document
+          doc.really_destroy!
+
+          # Re-fetch the original post. I guess we could also just copy
+          # the attributes here?
+          original.fetch!
+
+          # Continue with the original post
+          doc = original
         end
+
+        doc.save!
       end
+
+      doc
     end
   end
 end

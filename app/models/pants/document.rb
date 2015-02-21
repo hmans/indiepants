@@ -3,6 +3,7 @@ class Pants::Document < ActiveRecord::Base
 
   include Scopes
   include DocumentTypeSupport
+  include DocumentDeduplication
   include DocumentFetching
   include DocumentLinks
 
@@ -35,7 +36,7 @@ class Pants::Document < ActiveRecord::Base
   end
 
   after_create do
-    if local?
+    if local? && uid.blank?
       update_columns(uid: URI.join(user.url, "/pants/documents/#{id}").to_s)
     end
   end
@@ -87,19 +88,6 @@ class Pants::Document < ActiveRecord::Base
 
   def remote?
     !local?
-  end
-
-  concerning :Deduplication do
-    included do
-      after_save :deduplicate_via_uid
-    end
-
-    def deduplicate_via_uid
-      # Delete all other documents with the same user and UID (but not this one)
-      if remote? && uid.present?
-        user.documents.where(uid: uid).where("id != ?", id).destroy_all
-      end
-    end
   end
 
   concerning :Uid do
