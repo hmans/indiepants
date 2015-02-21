@@ -3,6 +3,9 @@
     time.dt-published datetime=document.created_at
       = link_to l(document.created_at, format: "%H:%M"), document.url
 
+  - if document.title.present?
+    h2 = document.title
+
   = clean_html document.html
 
   .document-attributes

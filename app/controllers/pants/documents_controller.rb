@@ -80,7 +80,7 @@ module Pants
   private
 
     def document_params
-      params.require(:document).permit(:slug, :body)
+      params.require(:document).permit(:slug, :body, :title)
     end
 
     def find_document_by_id
