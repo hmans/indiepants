@@ -105,7 +105,7 @@ class Pants::Document < ActiveRecord::Base
     def deduplicate_via_uid
       # Delete all other documents with the same user and UID (but not this one)
       if remote? && uid.present?
-        user.documents.where(uid: uid).where("id != ?", id).delete_all
+        user.documents.where(uid: uid).where("id != ?", id).destroy_all
       end
     end
   end
