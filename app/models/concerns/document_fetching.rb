@@ -75,6 +75,8 @@ concern :DocumentFetching do
         doc.fetch!
 
         if original = doc.find_original
+          Rails.logger.warn "Found original document for UID #{doc.uid}"
+
           # Get rid of this document
           doc.really_destroy!
 
