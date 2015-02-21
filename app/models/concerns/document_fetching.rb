@@ -26,6 +26,9 @@ concern :DocumentFetching do
         fetch = Fetch[url]
 
         if fetch.success? && data = fetch.data
+          # If we have a user, there is a chance that we're updating an
+          # existing document.
+          #
           if user
             # If data contains a UID, look up the document by UID.
             doc = user.documents.where(uid: data['uid']).take if data['uid'].present?
