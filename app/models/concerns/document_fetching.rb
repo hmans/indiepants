@@ -51,7 +51,7 @@ concern :DocumentFetching do
   # Returns true if it's time to fetch the contents for this post.
   #
   def fetch?
-    remote? && (new_record? || updated_at < 30.minutes.ago)
+    remote?   #  && (new_record? || updated_at < 30.minutes.ago)
   end
 
   def consume_json(json)
