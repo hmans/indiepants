@@ -91,15 +91,7 @@ class Pants::Document < ActiveRecord::Base
 
   concerning :Deduplication do
     included do
-      after_save :deduplicate_via_path
       after_save :deduplicate_via_uid
-    end
-
-    def deduplicate_via_path
-      # Delete all other documents with the same user and path (but not this one)
-      if remote? && path.present?
-        user.documents.where(path: path).where("id != ?", id).delete_all
-      end
     end
 
     def deduplicate_via_uid
