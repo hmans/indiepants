@@ -21,35 +21,26 @@ concern :DocumentLinks do
     # Remember these for later
     marked_for_deletion = outgoing_links.pluck(:id)
 
-    selectors = %w[
-      link[rel="in-reply-to"]
-      a.u-in-reply-to
-      a.u-like-of
-      a.u-repost-of
-    ]
+    selector_map = {
+      'link[rel="in-reply-to"]' => 'reply',
+      'a.u-in-reply-to' => 'reply',
+      'a.u-like-of' => 'like',
+      'a.u-repost-of' => 'repost'
+    }
 
     # create new links depending on content
-    Nokogiri::HTML(html).css(selectors.join(', ')).each do |el|
+    Nokogiri::HTML(html).css(selector_map.keys.join(', ')).each do |el|
       # Find an existing document matching the given URL, or create
       # a new, temporary one (we're not saving.)
       target = Pants::Document.find_by_url(el['href']) || Pants::Document.new(url: el['href'])
       link   = Pants::Link.where(source: self, target: target).first_or_initialize
 
       # Analyze the actual HTML link
-      classes   = el['class'].try(:split) || []
-      rels      = el['rel'].try(:split) || []
       link.rels = []
-
-      if classes.include?("u-in-reply-to") || rels.include?('in-reply-to')
-        link.rels << "reply"
-      end
-
-      if classes.include?("u-like-of")
-        link.rels << "like"
-      end
-
-      if classes.include?("u-repost-of")
-        link.rels << "repost"
+      selector_map.each do |selector, rel|
+        if el.matches?(selector)
+          link.rels << rel
+        end
       end
 
       # We're only interested in links to existing local documents.
