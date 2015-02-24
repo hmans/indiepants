@@ -7,7 +7,7 @@ describe Pants::Document do
     let(:newest_link) { Pants::Link.newest.take }
 
     it "automatically populates its outgoing links" do
-      subject.html = %[Here's a <a href="#{other_document.url}">link</a>!]
+      subject.html = %[Here's a <a href="#{other_document.url}" class="u-in-reply-to">link</a>!]
 
       expect { subject.save! }.to change { Pants::Link.count }.by(1)
       expect(newest_link.source).to eq(subject)
@@ -41,22 +41,28 @@ describe Pants::Document do
     end
 
     it "doesn't create multiple Link instances for the same target" do
-      subject.html = %[Here's a <a href="#{other_document.url}">link</a>, and <a href="#{other_document.url}">another link</a>!]
+      subject.html = %[Here's a <a href="#{other_document.url}" class="u-in-reply-to">link</a>,
+                       and <a href="#{other_document.url}" class="u-in-reply-to">another link</a>!]
       expect { subject.save! }.to change { Pants::Link.count }.by(1)
     end
 
     it "doesn't create entries for unknown local targets" do
-      subject.html = %[Here's a link to <a href="#{subject.user.url}">myself</a>!]
+      subject.html = %[Here's a link to <a href="#{subject.user.url}" class="u-in-reply-to">myself</a>!]
       expect { subject.save! }.to_not change { Pants::Link.count }
     end
 
     it "doesn't create entries for remote targets" do
-      subject.html = %[Here's a link to <a href="http://www.planetcrap.com/">a remote site</a>!]
+      subject.html = %[Here's a link to <a href="http://www.planetcrap.com/" class="u-in-reply-to">a remote site</a>!]
 
       # We're expecting to send a webmention to the referenced site
       expect(subject).to receive(:send_webmention).with("http://www.planetcrap.com/")
 
       # We're not expecting local links to change
+      expect { subject.save! }.to_not change { Pants::Link.count }
+    end
+
+    it "doesn't create links for non-mf2 anchor tags" do
+      subject.html = %[Here's a <a href="#{other_document.url}">link</a>!]
       expect { subject.save! }.to_not change { Pants::Link.count }
     end
   end

@@ -21,8 +21,15 @@ concern :DocumentLinks do
     # Remember these for later
     marked_for_deletion = outgoing_links.pluck(:id)
 
+    selectors = %w[
+      link[rel="in-reply-to"]
+      a.u-in-reply-to
+      a.u-like-of
+      a.u-repost-of
+    ]
+
     # create new links depending on content
-    Nokogiri::HTML(html).css('a, link').each do |el|
+    Nokogiri::HTML(html).css(selectors.join(', ')).each do |el|
       # Find an existing document matching the given URL, or create
       # a new, temporary one (we're not saving.)
       target = Pants::Document.find_by_url(el['href']) || Pants::Document.new(url: el['href'])
