@@ -81,6 +81,13 @@ blockquote {
   border-left: 3px solid #eee;
 }
 
+ul, ol {
+  @extend p;
+  &>li { margin-left: 2em; }
+}
+
+ul>li { list-style-type: square; }
+ol>li { list-style-type: decimal; }
 
 // CONTENT AREA
 
