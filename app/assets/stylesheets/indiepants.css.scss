@@ -101,6 +101,23 @@ a {
   ol>li { list-style-type: decimal; }
 }
 
+
+// BUTTONS
+
+%button {
+  display: inline-block;
+  background-color: $extra-color;
+  border: none;
+  color: $background-color;
+  font: $font;
+  font-weight: bold;
+  line-height: 1;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+a.button { @extend %button }
+
 // FLASHES
 
 .flash { font-weight: bold }
@@ -148,14 +165,7 @@ textarea {
 }
 
 input[type="button"], input[type="submit"], button {
-  display: inline-block;
-  background-color: $extra-color;
-  border: none;
-  color: $background-color;
-  font: $font;
-  font-weight: bold;
-  line-height: 1;
-  padding: 8px 16px;
+  @extend %button;
 }
 
 form.new_document {

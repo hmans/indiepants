@@ -4,11 +4,7 @@ feature "creating a post" do
   given!(:user) { create :user, local: true, host: 'foo.pants.dev', password: 'secret' }
 
   scenario do
-    visit "http://foo.pants.dev/"
-    click_on "Login"
-
-    fill_in "Password", with: "secret"
-    click_button "Login"
+    login user
 
     fill_in 'document_body', with: "Hi, I'm a post!\n\nI'm **Markdown formatted.**"
     expect { click_button "Create Post" }

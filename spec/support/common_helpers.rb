@@ -19,4 +19,26 @@ module CommonHelpers
     </html>
     EOS
   end
+
+  def expected_user_json(user)
+    {
+      name: user.name,
+      url:  user.url,
+      data: user.data
+    }.with_indifferent_access
+  end
+
+  def expected_document_json(document)
+    {
+      url: document.url,
+      uid: document.uid,
+      type: document.type,
+      title: document.title,
+      html: document.html,
+      data: document.data,
+      tags: document.tags,
+      previous_paths: document.previous_paths,
+      published_at: document.published_at.iso8601
+    }.with_indifferent_access
+  end
 end

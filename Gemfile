@@ -29,6 +29,7 @@ gem 'webmention'
 
 # API
 gem 'jbuilder', '~> 2.0'
+gem 'yajl-ruby'
 
 
 # Development
@@ -38,6 +39,7 @@ group :development, :test do
   gem 'spring-commands-rspec'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'ffaker'
   gem 'factory_girl_rails'
   gem 'rspec-rails'
   gem 'rspec-collection_matchers'

@@ -26,6 +26,17 @@ class Pants::UsersController < ApplicationController
     respond_with @user, location: :root
   end
 
+  def export
+    respond_with @user do |format|
+      format.json do
+        if params[:download] then
+          filename = "#{@user.host.parameterize}-export-#{Time.now.to_formatted_s(:db).parameterize}.json"
+          headers['Content-Disposition'] = "attachment; filename=#{filename}"
+        end
+      end
+    end
+  end
+
 private
 
   def load_user

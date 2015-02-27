@@ -5,11 +5,7 @@ feature "editing a post" do
   given!(:post) { create :pants_post, user: user, body: "I'm a post!" }
 
   scenario do
-    visit "http://foo.pants.dev/"
-    click_on "Login"
-
-    fill_in "Password", with: "secret"
-    click_button "Login"
+    login user
 
     visit post.url
     old_post_url = post.url

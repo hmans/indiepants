@@ -21,5 +21,6 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.include CommonHelpers
   config.include RequestHelpers, type: :request
+  config.include FeatureHelpers, type: :feature
   config.include FactoryGirl::Syntax::Methods
 end
