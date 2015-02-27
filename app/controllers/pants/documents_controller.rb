@@ -4,7 +4,7 @@ module Pants
 
     before_action :ensure_logged_in!, except: [:show, :index]
     before_action :serve_custom_css!, only: [:index, :show]
-    
+
     def index
       serve_custom_css!
       @documents = current_site.documents.newest
@@ -19,8 +19,10 @@ module Pants
         find_document_by_path ||
         find_document_by_previous_path
 
-      # TODO: serve a proper 404 here
-      raise "document not found" if @document.blank?
+      if @document.blank?
+        return render_404
+        fjisdojfos
+      end
 
       # If document has been soft-deleted, serve 401 Gone
       if @document.deleted?

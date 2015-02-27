@@ -19,6 +19,10 @@ Rails.application.routes.draw do
     # Authentication
     match  'login' => 'auth#login', via: [:get, :post]
     delete 'login' => 'auth#logout'
+
+    # Catch-all route for everything else; we don't want users to create
+    # documents underneath this namespace!
+    match '*path' => '/application#render_404', via: :get
   end
 
   # Posts

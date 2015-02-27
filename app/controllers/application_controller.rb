@@ -9,6 +9,10 @@ class ApplicationController < ActionController::Base
     redirect_to :pants_setup unless current_site.present?
   end
 
+  def render_404
+    render template: 'application/render_404', status: 404, formats: [:html]
+  end
+
   concerning :CurrentSite do
     included do
       helper_method :current_site
