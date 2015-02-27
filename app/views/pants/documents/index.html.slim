@@ -1,3 +1,6 @@
+- content_for :header do
+  link rel="pants-documents" href=(pants_documents_path(format: 'json'))
+
 - if logged_in?
   = form_for Pants::Post.new, as: 'document', url: pants_documents_path do |f|
     = f.hidden_field :type
