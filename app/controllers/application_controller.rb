@@ -52,7 +52,9 @@ class ApplicationController < ActionController::Base
     end
 
     def ensure_logged_in!
-      raise "No access" if logged_out?
+      unless logged_in?
+        redirect_to :pants_login, alert: "You must be logged in to access this page."
+      end
     end
 
     def ensure_logged_out!

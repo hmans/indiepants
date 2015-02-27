@@ -101,6 +101,13 @@ a {
   ol>li { list-style-type: decimal; }
 }
 
+// FLASHES
+
+.flash { font-weight: bold }
+.flash-notice { color: $extra-color; }
+.flash-alert  { color: red; }
+
+
 // CONTENT AREA
 
 #main {
@@ -162,6 +169,7 @@ form .hint {
 }
 
 // PRIMARY HEADER
+
 header[role="primary"] {
   font-weight: bold;
   font-size: 40px;
