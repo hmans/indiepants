@@ -11,12 +11,20 @@ concern :DocumentLinks do
       dependent: :destroy
 
     after_save do
-      if html_changed? || title_changed? || path_changed?
+      if populate_links?
         Background.go { populate_links! }
       end
     end
   end
 
+  # Is it time to (re)populate this document's links?
+  #
+  def populate_links?
+    html_changed? || title_changed? || path_changed?
+  end
+
+  # (Re)populate this document's links.
+  #
   def populate_links!
     # Remember these for later
     marked_for_deletion = outgoing_links.pluck(:id)
