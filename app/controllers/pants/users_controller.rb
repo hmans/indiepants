@@ -7,7 +7,13 @@ class Pants::UsersController < ApplicationController
 
   def show
     respond_with @user do |f|
-      f.css { render text: @user.custom_css, content_type: "text/css" }
+      f.css do
+        if @user.custom_css.present?
+          render text: @user.custom_css, content_type: "text/css"
+        else
+          render text: "not found", status: 404
+        end
+      end
     end
   end
 
