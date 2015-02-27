@@ -40,6 +40,14 @@ describe Pants::Document do
       expect(newest_link.rels).to eq(["repost"])
     end
 
+    it "correctly expands relative URLs" do
+      another_document = create(:document, user: subject.user)
+      subject.html = %[Here's a <a href="#{another_document.path}" class="u-in-reply-to">link</a>
+                       to my own post, because I'm awesome!]
+      expect { subject.save! }.to change { Pants::Link.count }.by(1)
+      expect(newest_link.rels).to eq(["reply"])
+    end
+
     it "doesn't create multiple Link instances for the same target" do
       subject.html = %[Here's a <a href="#{other_document.url}" class="u-in-reply-to">link</a>,
                        and <a href="#{other_document.url}" class="u-in-reply-to">another link</a>!]

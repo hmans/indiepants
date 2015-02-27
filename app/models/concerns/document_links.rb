@@ -40,7 +40,8 @@ concern :DocumentLinks do
     Nokogiri::HTML(html).css(selector_map.keys.join(', ')).each do |el|
       # Find an existing document matching the given URL, or create
       # a new, temporary one (we're not saving.)
-      target = Pants::Document.find_by_url(el['href']) || Pants::Document.new(url: el['href'])
+      href   = URI.join(user.url, el['href'])
+      target = Pants::Document.find_by_url(href) || Pants::Document.new(url: href)
       link   = Pants::Link.where(source: self, target: target).first_or_initialize
 
       # Analyze the actual HTML link
