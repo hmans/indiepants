@@ -2,6 +2,8 @@ module Pants
   class User < ActiveRecord::Base
     has_secure_password validations: false
 
+    store_accessor :data, :custom_css
+
     validates :password,
       if: :local?, on: :create,
       length: { within: 6..40 },

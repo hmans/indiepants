@@ -3,24 +3,34 @@ html
   head
     title IndiePants
     meta name="viewport" content="width=device-width, initial-scale=1.0"
-    = stylesheet_link_tag    "application", media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag "application", 'data-turbolinks-track' => true
-    = csrf_meta_tags
+
+    // Stylesheets
+    - if show_custom_css?
+      = stylesheet_link_tag pants_user_path(format: "css")
+    - else
+      = stylesheet_link_tag "application", media: 'all', 'data-turbolinks-track' => true
+
+    // Link tags
     - if current_site.present?
       = auto_discovery_link_tag :atom, pants_documents_url(format: 'atom'), title: "Latest Posts by #{current_site.name} (ATOM)"
       link href=pants_webmentions_url rel="webmention"
+
+    // Everything else
     = yield :header
+    = csrf_meta_tags
 
   body
     #main
       - if current_site.present?
         header role="primary"
           = current_site.name
-          
+
       nav role="primary"
         ul
           li = link_to "Blog", :root
           - if logged_in?
+            li = link_to "Settings", :edit_pants_user
             li = link_to "Logout", :pants_login, method: "delete"
           - else
             li = link_to "Login", :pants_login

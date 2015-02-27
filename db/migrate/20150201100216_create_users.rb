@@ -11,6 +11,7 @@ class CreateUsers < ActiveRecord::Migration
 
       # Additional data
       t.string :name
+      t.jsonb  :data, null: false, default: {}
 
       # Timestamps
       t.timestamps null: false

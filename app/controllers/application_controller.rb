@@ -59,4 +59,10 @@ class ApplicationController < ActionController::Base
       raise "No access" if logged_in?
     end
   end
+
+private
+
+  def serve_custom_css!
+    @serve_custom_css = true
+  end
 end

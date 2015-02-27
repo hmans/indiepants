@@ -9,6 +9,9 @@ Rails.application.routes.draw do
 
     resources :webmentions
 
+    # User
+    resource :user, only: [:show, :edit, :update]
+
     # Setup
     get  'setup' => 'setup#setup'
     post 'setup' => 'setup#setup'

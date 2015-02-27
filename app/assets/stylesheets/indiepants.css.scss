@@ -41,6 +41,14 @@ $extra-color: #f93;
   a:hover { color: #666; }
 }
 
+%smally {
+  @include reset-links;
+  font-size: 85%;
+  color: #ccc;
+  a { color: #ccc; }
+  a:hover { color: #666; }
+}
+
 // BASICS
 
 * { @include box-sizing(inherit); }
@@ -115,6 +123,7 @@ form { @include collapse-margins }
 label {
   display: block;
   margin-bottom: 5px;
+  font-weight: bold;
 }
 
 textarea, input[type="text"], input[type="password"] {
@@ -144,6 +153,12 @@ input[type="button"], input[type="submit"], button {
 
 form.new_document {
   margin-bottom: 2em;
+}
+
+form .hint {
+  display: block;
+  margin-top: 5px;
+  @extend %smally;
 }
 
 // PRIMARY HEADER

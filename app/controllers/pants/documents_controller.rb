@@ -3,8 +3,10 @@ module Pants
     respond_to :html, :json
 
     before_action :ensure_logged_in!, except: [:show, :index]
-
+    before_action :serve_custom_css!, only: [:index, :show]
+    
     def index
+      serve_custom_css!
       @documents = current_site.documents.newest
 
       respond_with @documents do |format|

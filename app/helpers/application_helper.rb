@@ -13,4 +13,8 @@ module ApplicationHelper
   rescue ActionView::MissingTemplate
     content_tag(:p) { "No form found for this document type." }
   end
+
+  def show_custom_css?
+    @serve_custom_css && current_site.try { custom_css.present? }
+  end
 end

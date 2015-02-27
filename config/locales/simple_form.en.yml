@@ -11,14 +11,16 @@ en:
     error_notification:
       default_message: "Please review the problems below:"
     # Examples
-    # labels:
-    #   defaults:
-    #     password: 'Password'
-    #   user:
-    #     new:
-    #       email: 'E-mail to sign in.'
-    #     edit:
-    #       email: 'E-mail.'
+    labels:
+      defaults:
+        password: 'Password'
+      pants_user:
+        name: "Full Name"
+        custom_css: "Custom CSS"
+    hints:
+      pants_user:
+        name: "This name will be displayed to other users."
+        custom_css: "Use this to replace the default Pants styles with your own. Your custom styles will only be applied to publically visible pages (like your blog and your posts.)"
     # hints:
     #   defaults:
     #     username: 'User name to sign in.'

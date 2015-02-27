@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 20150216180849) do
     t.string   "password_digest"
     t.boolean  "local",           default: false,  null: false
     t.string   "name"
+    t.jsonb    "data",            default: {},     null: false
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
   end
