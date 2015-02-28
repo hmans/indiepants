@@ -33,7 +33,7 @@ end
 # Configure
 Dragonfly.app.configure do
   plugin :imagemagick
-  secret "eca8dd8250639a447bac9339c065c831112a1bf379b4a06652615d1165a7abae"
+  secret Rails.application.secrets.secret_key_base
   url_format "/media/:job/:name"
   datastore PantsDataStore.new
 end
