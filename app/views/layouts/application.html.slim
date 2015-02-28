@@ -23,17 +23,19 @@ html
   body
     #main
       - if current_site.present?
-        header role="primary"
-          = current_site.name
+        header.h-card role="primary"
+          - if current_site.photo.present?
+            = image_tag current_site.photo.thumb("200x200#", format: 'jpg').url, class: "u-photo"
+          .p-name = current_site.name
 
-      nav role="primary"
-        ul
-          li = link_to "Blog", :root
-          - if logged_in?
-            li = link_to "Settings", :edit_pants_user
-            li = link_to "Logout", :pants_login, method: "delete"
-          - else
-            li = link_to "Login", :pants_login
+          nav role="primary"
+            ul
+              li = link_to "Blog", :root, class: "u-url"
+              - if logged_in?
+                li = link_to "Settings", :edit_pants_user
+                li = link_to "Logout", :pants_login, method: "delete"
+              - else
+                li = link_to "Login", :pants_login
 
       section#content
         = render "flashes"

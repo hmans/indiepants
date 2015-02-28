@@ -6,13 +6,17 @@ class Pants::UsersController < ApplicationController
   before_action :load_user
 
   def show
-    respond_with @user do |f|
-      f.css do
-        if @user.custom_css.present?
-          render text: @user.custom_css, content_type: "text/css"
-        else
-          render text: "not found", status: 404
-        end
+    respond_with @user do |format|
+      # Custom CSS
+      format.css do
+        return render_404 if @user.custom_css.blank?
+        render text: @user.custom_css, content_type: "text/css"
+      end
+
+      # User Photo
+      format.jpg do
+        return render_404 if @user.photo.blank?
+        redirect_to @user.photo.encode('jpg', '-quality 80').url, status: 302
       end
     end
   end
@@ -44,6 +48,6 @@ private
   end
 
   def user_params
-    params.require(:pants_user).permit(:name, :custom_css)
+    params.require(:pants_user).permit(:name, :custom_css, :photo)
   end
 end

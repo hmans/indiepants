@@ -181,8 +181,19 @@ form .hint {
 // PRIMARY HEADER
 
 header[role="primary"] {
-  font-weight: bold;
-  font-size: 40px;
+  position: relative;
+
+  .p-name {
+    font-weight: bold;
+    font-size: 40px;
+  }
+
+  .u-photo {
+    position: absolute;
+    right: 0;
+    width: 80px;
+    height: 80px;
+  }
 }
 
 

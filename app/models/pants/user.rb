@@ -2,7 +2,9 @@ module Pants
   class User < ActiveRecord::Base
     has_secure_password validations: false
 
-    store_accessor :data, :custom_css
+    store_accessor :data, :custom_css, :photo_uid
+
+    dragonfly_accessor :photo
 
     validates :password,
       if: :local?, on: :create,

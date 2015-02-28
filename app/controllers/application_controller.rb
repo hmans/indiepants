@@ -10,7 +10,13 @@ class ApplicationController < ActionController::Base
   end
 
   def render_404
-    render template: 'application/render_404', status: 404, formats: [:html]
+    if request.format.html?
+      render template: 'application/render_404', status: 404
+    else
+      render text: "not found",
+        status: 404,
+        content_type: 'text/plain'
+    end
   end
 
   concerning :CurrentSite do

@@ -19,6 +19,7 @@ Pants Phase 2: A clean IndieWeb implementation of Pants.
 
 * Ruby 2.2.0
 * PostgreSQL 9.4
+* ImageMagick
 
 ### Running with Docker
 

@@ -1,5 +1,6 @@
 = simple_form_for user, url: :pants_user do |f|
   = f.input :name
+  = f.input :photo, as: :file
   = f.input :custom_css, as: :text, input_html: { rows: 10 }
   .buttons
     = f.submit "Save Settings"
