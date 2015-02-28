@@ -1,16 +1,41 @@
 require 'dragonfly'
 
+class PantsDataStore
+  def klass
+    Pants::Binary
+  end
+
+  # Store the data AND meta, and return a unique string uid
+  def write(content, opts={})
+    instance = klass.create!(payload: content.data, meta: content.meta)
+    instance.id
+  end
+
+  # Retrieve the data and meta as a 2-item array
+  def read(uid)
+    if instance = klass.where(id: uid).take
+      [
+        instance.payload,
+        instance.meta
+      ]
+    else
+      nil
+    end
+  end
+
+  # Delete the specified binary resource
+  def destroy(uid)
+    klass.find(uid).destroy
+  end
+end
+
+
 # Configure
 Dragonfly.app.configure do
   plugin :imagemagick
-
   secret "eca8dd8250639a447bac9339c065c831112a1bf379b4a06652615d1165a7abae"
-
   url_format "/media/:job/:name"
-
-  datastore :file,
-    root_path: Rails.root.join('public/system/dragonfly', Rails.env),
-    server_root: Rails.root.join('public')
+  datastore PantsDataStore.new
 end
 
 # Logger
