@@ -58,4 +58,5 @@ end
 # production only
 group :production do
   gem 'rails_12factor'
+  gem 'rack-cache'
 end
