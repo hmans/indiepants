@@ -147,7 +147,7 @@ GEM
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     json (1.8.2)
-    kramdown (1.5.0)
+    kramdown (1.6.0)
     link_header (0.0.8)
     loofah (2.0.1)
       nokogiri (>= 1.5.9)
