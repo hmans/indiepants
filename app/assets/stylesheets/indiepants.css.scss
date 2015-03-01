@@ -254,6 +254,8 @@ article.h-entry {
     }
 
     .dt-published { @extend .fa-clock-o }
+    .number-of-likes { @extend .fa-star }
+    .number-of-replies { @extend .fa-reply }
   }
 }
 

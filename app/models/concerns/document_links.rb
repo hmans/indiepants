@@ -69,6 +69,17 @@ concern :DocumentLinks do
     if marked_for_deletion.any?
       outgoing_links.where(id: marked_for_deletion).destroy_all
     end
+
+    # For every local document that we're linking to, update the link counts.
+    targets = outgoing_links.map { |link| link.target }.uniq
+    targets.each(&:update_link_counts!)
+  end
+
+  def update_link_counts!
+    self.number_of_likes   = incoming_links.rel("like").count
+    self.number_of_replies = incoming_links.rel("reply").count
+    self.number_of_reposts = incoming_links.rel("repost").count
+    save!
   end
 
   def send_webmention(target)

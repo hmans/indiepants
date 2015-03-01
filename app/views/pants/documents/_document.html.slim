@@ -10,6 +10,16 @@
     time.dt-published datetime=document.created_at
       = link_to l(document.created_at, format: :document), document.url, class: 'u-url'
 
+    // number of likes
+    - if document.number_of_likes.present?
+      span.number-of-likes
+        = link_to document.number_of_likes, document.url
+
+    // number of replies
+    - if document.number_of_replies.present?
+      span.number-of-replies
+        = link_to document.number_of_replies, document.url
+
   .e-content
     - if document.title.present?
       h2 = document.title

@@ -24,12 +24,14 @@ describe Pants::Document do
       subject.html = %[<link rel="in-reply-to" href="#{other_document.url}">]
       subject.save!
       expect(newest_link.rels).to eq(["reply"])
+      expect(other_document.reload.number_of_replies).to eq(1)
     end
 
     it "correctly detects a.u-like-of likes" do
       subject.html = %[I like <a href="#{other_document.url}" class="u-like-of">this article</a>!]
       subject.save!
       expect(newest_link.rels).to eq(["like"])
+      expect(other_document.reload.number_of_likes).to eq(1)
     end
 
     it "correctly detects a.u-repost-of reposts" do
@@ -38,6 +40,7 @@ describe Pants::Document do
                        I'm reposting it!]
       subject.save!
       expect(newest_link.rels).to eq(["repost"])
+      expect(other_document.reload.number_of_reposts).to eq(1)
     end
 
     it "correctly expands relative URLs" do

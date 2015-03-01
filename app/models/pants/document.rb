@@ -1,5 +1,5 @@
 class Pants::Document < ActiveRecord::Base
-  CONSUMABLE_ATTRIBUTES = %w[url uid type title html data tags published_at]
+  CONSUMABLE_ATTRIBUTES = %w[url uid type title html data tags meta published_at]
 
   acts_as_paranoid
 
@@ -7,6 +7,8 @@ class Pants::Document < ActiveRecord::Base
   include DocumentTypeSupport
   include DocumentFetching
   include DocumentLinks
+
+  store_accessor :meta, :number_of_likes, :number_of_replies, :number_of_reposts
 
   belongs_to :user,
     class_name: "Pants::User",

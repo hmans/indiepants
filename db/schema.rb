@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 20150228082847) do
     t.string   "previous_paths", default: [],              array: true
     t.text     "html"
     t.jsonb    "data",           default: {}, null: false
+    t.jsonb    "meta",           default: {}, null: false
     t.string   "tags",           default: [],              array: true
     t.datetime "published_at"
     t.datetime "deleted_at"

@@ -17,5 +17,5 @@ if Rails.env.development?
 
   bobs_post = Pants::Post.create! user: bob, body: "Hello, I am Bob."
 
-  Pants::Post.create! user: alice, body: "I like linking to www.planetcrap.com. I also like Bob, and linking to <a href=\"#{bobs_post.url}\" class=\"\">his posts</a>. Yay!"
+  Pants::Post.create! user: alice, body: "I like linking to www.planetcrap.com. I also like Bob, and linking to <a href=\"#{bobs_post.url}\" class=\"u-like-of\">his posts</a>. Yay!"
 end

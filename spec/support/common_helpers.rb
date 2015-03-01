@@ -37,6 +37,7 @@ module CommonHelpers
       html: document.html,
       data: document.data,
       tags: document.tags,
+      meta: document.meta,
       previous_paths: document.previous_paths,
       published_at: document.published_at.iso8601
     }.with_indifferent_access
