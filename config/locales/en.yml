@@ -20,4 +20,13 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  prompts:
+    - "What's up?"
+    - "What's going on?"
+    - "How are you feeling today?"
+    - "How are things?"
+    - "What are you up to?"
+    - "How have you been?"
+    - "What's new?"
+    - "What's fresh?"
+    - "What's cooking?"

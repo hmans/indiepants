@@ -4,7 +4,7 @@
 - if logged_in?
   = simple_form_for Pants::Post.new, as: 'document', url: pants_documents_path do |f|
     = f.hidden_field :type
-    = f.input_field :body, as: :text, rows: 3
+    = f.input_field :body, as: :text, rows: 3, autofocus: true, placeholder: I18n.t("prompts").sample
     = f.submit
 
 = render @documents
