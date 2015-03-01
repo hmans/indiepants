@@ -19,6 +19,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'turbolinks'
 gem 'slodown', github: 'hmans/slodown'
 gem 'simple_form'
+gem 'font-awesome-rails'
 
 # Images and other binary data
 gem 'dragonfly'

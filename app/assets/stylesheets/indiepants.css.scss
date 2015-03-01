@@ -2,6 +2,7 @@
 
 @import "compass";
 @import "compass/reset";
+@import "font-awesome";
 
 // CONFIGURATION
 
@@ -9,7 +10,8 @@ $font: 17px/1.4 "Roboto", Helvetica, Arial, sans-serif;
 $background-color: #fff;
 $color: #444;
 $link-color: #f93;
-$light-color: #ccc;
+$light-color: #bbb;
+$light-color-active: #666;
 $extra-color: #f93;
 
 
@@ -37,16 +39,16 @@ $extra-color: #f93;
   font-weight: bold;
   text-transform: uppercase;
 
-  a { color: #ccc; }
-  a:hover { color: #666; }
+  a { color: $light-color; }
+  a:hover { color: $light-color-active; }
 }
 
 %smally {
   @include reset-links;
   font-size: 85%;
-  color: #ccc;
-  a { color: #ccc; }
-  a:hover { color: #666; }
+  color: $light-color;
+  a { color: $light-color; }
+  a:hover { color: $light-color-active; }
 }
 
 // BASICS
@@ -217,10 +219,17 @@ article.h-entry {
   header {
     @extend p;
     @extend %smally;
-    ul>li {
+    &>* {
+      @extend .fa;
       display: inline-block;
       margin-right: 1em;
+
+      &::before {
+        margin-right: 5px;
+      }
     }
+    .author { @extend .fa-user }
+    .published-at { @extend .fa-clock-o }
   }
 }
 
