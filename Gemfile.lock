@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/hmans/slodown.git
-  revision: 3d4c560a5a6df6fb5b5fe11fcb6ef8f7303568d1
+  revision: d1fea1981a80133ee4c4868d5ca876e22de8f81f
   specs:
     slodown (0.1.3)
       coderay (>= 1.0.0)
