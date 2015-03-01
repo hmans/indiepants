@@ -1,6 +1,5 @@
-h1 Login
-
 = simple_form_for @user, as: :user, url: pants_login_path, method: 'post' do |f|
+  p Please enter your password to log in to your site.
   = f.input :password
   .buttons
     = f.submit "Login"

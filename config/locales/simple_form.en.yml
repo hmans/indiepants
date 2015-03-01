@@ -17,6 +17,7 @@ en:
       pants_user:
         name: "Full Name"
         custom_css: "Custom CSS"
+        photo: "Upload a Photo"
     hints:
       pants_user:
         name: "This name will be displayed to other users."

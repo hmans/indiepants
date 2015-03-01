@@ -84,7 +84,13 @@ strong, b {
 
 h1, h2, h3, h4, h5, h6 {
   @extend p;
+  margin-top: 2.5em;
   @extend b;
+}
+
+h1, h2 {
+  text-transform: uppercase;
+  border-bottom: 3px solid $light-color;
 }
 
 a {
@@ -272,4 +278,9 @@ article.h-entry {
   a { color: inherit }
   margin-top: 3em;
 
+}
+
+.document-likes {
+  @extend %smally;
+  margin: 40px 0;
 }

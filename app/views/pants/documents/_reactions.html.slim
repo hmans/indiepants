@@ -1,16 +1,11 @@
 - links = document.incoming_links
 
 - if (likes = links.rel("like")).any?
-  p
+  p.document-likes
     ' <strong>#{pluralize likes.count, "Like", "Likes"}</strong> from
     ' #{likes.map { |like| link_to like.source.user.host, like.source.url }.to_sentence}
 
 - if (replies = links.rel("reply")).any?
-  h3 Replies:
+  h2 Replies
   - replies.each do |link|
     = render link.source
-
-- if (others = links.no_rel).any?
-  h3 Other documents linking here:
-  - others.each do |link|
-    p = link_to link.source.title, link.source.url
