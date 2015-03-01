@@ -211,14 +211,21 @@ nav[role="primary"] {
 // DOCUMENTS
 
 article.h-entry {
-  @extend %text;
   @extend p;
   margin-bottom: 2em;
 
   header {
     @extend p;
-    @extend %fatso;
+    @extend %smally;
+    ul>li {
+      display: inline-block;
+      margin-right: 1em;
+    }
   }
+}
+
+.e-content {
+  @extend %text;
 }
 
 .document-attributes {

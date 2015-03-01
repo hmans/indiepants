@@ -1,7 +1,11 @@
 = content_tag_for(:article, document, class: 'h-entry') do
   header
-    time.dt-published datetime=document.created_at
-      = link_to l(document.created_at, format: "%H:%M"), document.url
+    ul
+      li
+        = link_to document.user.host, document.user.url
+      li
+        time.dt-published datetime=document.created_at
+          = link_to l(document.created_at, format: :document), document.url
 
   .e-content
     - if document.title.present?
