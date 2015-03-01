@@ -23,8 +23,7 @@ module CommonHelpers
   def expected_user_json(user)
     {
       name: user.name,
-      url:  user.url,
-      data: user.data
+      url:  user.url
     }.with_indifferent_access
   end
 
