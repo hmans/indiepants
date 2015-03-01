@@ -2,6 +2,8 @@
   header
     // p-author h-card
     span.p-author.h-card
+      - if document.user.photo.present?
+        = link_to image_tag(document.user.photo_thumbnail.url, class: "u-photo"), document.user.url
       = link_to document.user.host, document.user.url, class: 'p-name u-url'
 
     // dt-published

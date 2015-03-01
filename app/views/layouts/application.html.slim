@@ -25,7 +25,7 @@ html
       - if current_site.present?
         header.h-card role="primary"
           - if current_site.photo.present?
-            = image_tag current_site.photo.thumb("200x200#", format: 'jpg').url, class: "u-photo"
+            = link_to image_tag(current_site.photo_thumbnail.url, class: "u-photo"), current_site.url
           .p-name = current_site.name
 
           nav role="primary"

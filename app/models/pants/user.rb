@@ -38,6 +38,10 @@ module Pants
       !local?
     end
 
+    def photo_thumbnail
+      photo.try { thumb("200x200#", format: "jpg") }
+    end
+
     class << self
       def [](host)
         where(host: host).take
