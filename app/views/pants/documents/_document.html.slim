@@ -1,8 +1,11 @@
 = content_tag_for(:article, document, class: 'h-entry') do
   header
-    span.author
-      = link_to document.user.host, document.user.url, class: 'p-author'
-    time.dt-published.published-at datetime=document.created_at
+    // p-author h-card
+    span.p-author.h-card
+      = link_to document.user.host, document.user.url, class: 'p-name u-url'
+
+    // dt-published
+    time.dt-published datetime=document.created_at
       = link_to l(document.created_at, format: :document), document.url, class: 'u-url'
 
   .e-content

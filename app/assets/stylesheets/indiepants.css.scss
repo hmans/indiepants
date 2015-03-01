@@ -228,8 +228,8 @@ article.h-entry {
         margin-right: 5px;
       }
     }
-    .author { @extend .fa-user }
-    .published-at { @extend .fa-clock-o }
+    .p-author { @extend .fa-user }
+    .dt-published { @extend .fa-clock-o }
   }
 }
 
