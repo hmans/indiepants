@@ -31,6 +31,12 @@ $extra-color: #f93;
   a:hover { text-decoration: underline; }
 }
 
+%rollup {
+  @include border-radius(10px 0);
+  @include transition(border-radius 100ms ease-out);
+  &:hover { @include border-radius(0); }
+}
+
 // PROTOTYPES
 
 %fatso {
@@ -212,9 +218,13 @@ nav[role="primary"] {
 
 // DOCUMENTS
 
+img.u-photo {
+  @extend %rollup;
+}
+
 article.h-entry {
   @extend p;
-  margin-bottom: 2em;
+  margin-bottom: 80px;
 
   header {
     position: relative;
