@@ -21,6 +21,9 @@ en:
       pants_user:
         name: "This name will be displayed to other users."
         custom_css: "Use this to replace the default Pants styles with your own. Your custom styles will only be applied to publically visible pages (like your blog and your posts.)"
+    placeholders:
+      document:
+        body: "What's up?"
     # hints:
     #   defaults:
     #     username: 'User name to sign in.'

@@ -2,9 +2,9 @@
   link rel="pants-documents" href=(pants_documents_path(format: 'json'))
 
 - if logged_in?
-  = form_for Pants::Post.new, as: 'document', url: pants_documents_path do |f|
+  = simple_form_for Pants::Post.new, as: 'document', url: pants_documents_path do |f|
     = f.hidden_field :type
-    = f.text_area :body, rows: 3
+    = f.input_field :body, as: :text, rows: 3
     = f.submit
 
 = render @documents
