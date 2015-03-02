@@ -14,7 +14,7 @@ concern :DocumentDeduplication do
 
   # Find all duplicates and merge them into this document.
   def merge_duplicates!
-    Rails.logger.infp "Merging duplicates of #{url}"
+    Rails.logger.info "Merging duplicates of #{url}"
     duplicates.each do |dupe|
       dupe.merge_with!(self)
     end
