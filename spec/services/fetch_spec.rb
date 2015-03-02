@@ -1,10 +1,10 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Fetch do
   subject { Fetch["http://remote-host/html"] }
 
-  describe '#data' do
-    let(:data) { subject.data }
+  describe '#document_data' do
+    let(:data) { subject.document_data }
 
     before do
       stub_request(:get, "http://www.planetcrap.com/")
@@ -73,6 +73,62 @@ describe Fetch do
 
     context "when the remote document is simple HTML" do
       it "performs crazy magicks"
+    end
+  end
+
+  describe '#user_data' do
+    let(:data) { subject.user_data }
+
+    before do
+      stub_request(:get, "http://remote-host/html")
+        .to_return(status: 200, body: html_body, headers: { "Content_Type": "text/html" })
+    end
+
+    context "when the remote document has a h-card" do
+      let(:html_body) do
+        <<-EOS
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Mr. Awesome</title>
+          </head>
+          <body>
+            <div class="h-card">
+              <a href="http://www.awesome.com/" class="u-url p-name">Mr. Awesome</a>
+              <img src="/photo.jpg" class="u-photo">
+            </div>
+          </body>
+        </html>
+        EOS
+      end
+
+      it "fetches the document from the h-entry" do
+        expect(data['url']).to eq("http://www.awesome.com/")
+        expect(data['name']).to eq("Mr. Awesome")
+        expect(data['photo_url']).to eq("http://remote-host/photo.jpg")
+      end
+    end
+
+    context "when the remote document is simple HTML" do
+      let(:html_body) do
+        <<-EOS
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Mr. Awesome</title>
+          </head>
+          <body>
+            I'm a very boring website.
+          </body>
+        </html>
+        EOS
+      end
+
+      it "tries to wing it using whatever HTML it can extract" do
+        expect(data['url']).to eq("http://remote-host/")
+        expect(data['name']).to eq("Mr. Awesome")
+        expect(data['photo_url']).to eq(nil)
+      end
     end
   end
 end

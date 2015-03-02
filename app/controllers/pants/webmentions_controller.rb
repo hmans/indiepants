@@ -25,7 +25,7 @@ module Pants
       return false unless Fetch[source].nokogiri.css('a').any? { |a| a['href'] == target }
 
       # fetch source document
-      source_document = Pants::Document.from_url(source)
+      source_document = Pants::Document.for_url(source).save!
     end
   end
 end

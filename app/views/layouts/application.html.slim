@@ -30,7 +30,7 @@ html
 
           nav role="primary"
             ul
-              li = link_to "Blog", :root, class: "u-url"
+              li = link_to "Blog", current_site.url, class: "u-url"
               - if logged_in?
                 li = link_to "Settings", :edit_pants_user
                 li = link_to "Logout", :pants_login, method: "delete"

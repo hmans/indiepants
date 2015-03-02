@@ -1,5 +1,6 @@
 - content_for :header do
   link rel="pants-documents" href=(pants_documents_path(format: 'json'))
+  link rel="pants-user" href=(pants_user_path(format: 'json'))
 
 - if logged_in?
   = simple_form_for Pants::Post.new, as: 'document', url: pants_documents_path do |f|

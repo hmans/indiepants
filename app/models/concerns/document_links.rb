@@ -41,7 +41,7 @@ concern :DocumentLinks do
       # Find an existing document matching the given URL, or create
       # a new, temporary one (we're not saving.)
       href   = URI.join(user.url, el['href'])
-      target = Pants::Document.find_by_url(href) || Pants::Document.new(url: href)
+      target = Pants::Document.for_url(href)
       link   = Pants::Link.where(source: self, target: target).first_or_initialize
 
       # Analyze the actual HTML link

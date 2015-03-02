@@ -10,13 +10,13 @@ describe Pants::Document do
       end
 
       it "invokes Fetch to update its data" do
-        data = double
+        data = { url: subject.url }
 
         expect(Fetch).to receive(:[])
           .with(subject.url)
-          .and_return(double(data: data))
+          .and_return(double(document_data: data, success?: true))
 
-        expect(subject).to receive(:attributes=)
+        expect(subject).to receive(:consume)
           .with(data)
 
         subject.fetch!
@@ -31,29 +31,6 @@ describe Pants::Document do
       it "does nothing" do
         expect(Fetch).to_not receive(:[]).with(subject.url)
         subject.fetch!
-      end
-    end
-  end
-
-  describe '.from_url' do
-    let(:user) { create :user, host: "alice" }
-    let(:document) { create :document, user: user }
-
-    context "when the URL is local" do
-      it "retrieves the post from the database" do
-        expect(Pants::Document.from_url(document.url)).to eq(document)
-      end
-    end
-
-    context "when the URL is remote" do
-      before do
-        stub_request(:get, "http://bob/foo")
-          .to_return(status: 200, body: html_document_with_hentry)
-      end
-
-      it "looks for the correct post to update (or creates a new one)" do
-        expect { Pants::Document.from_url("http://bob/foo") }
-          .to change { Pants::Document.count }.by(1)
       end
     end
   end

@@ -1,4 +1,12 @@
 concern :DocumentFetching do
+  class FetchError < StandardError ; end
+
+  included do
+    before_validation do
+      fetch! if fetch?
+    end
+  end
+
   # Returns true if it's time to fetch the contents for this post.
   #
   def fetch?
@@ -6,50 +14,22 @@ concern :DocumentFetching do
   end
 
   def fetch!
-    if remote? && data = Fetch[url].data
-      self.attributes = data
-    end
-  end
+    if fetch?
+      fetch = Fetch[url]
 
-  class_methods do
-    # Update/create a post given a URL.
-    #
-    def from_url(url)
-      user  = Pants::User[URI(url).host]
-
-      # For local users, just do a database lookup.
-      if user.try(:local?)
-        find_by_url(url)
-
-      # For everybody else, fetch the data.
-      else
-        fetch = Fetch[url]
-
-        if fetch.success? && data = fetch.data
-          # If we have a user, there is a chance that we're updating an
-          # existing document.
-          #
-          if user
-            # If data contains a UID, look up the document by UID.
-            doc = user.documents.where(uid: data['uid']).take if data['uid'].present?
-
-            # Otherwise, look up the document by its URL.
-            doc ||= user.documents.where(path: fetch.uri.path).take
-          end
-
-          # Otherwise, create a new document.
-          doc ||= Pants::Document.new
-
-          # Apply attributes
-          doc.url = url     # The URL may have changed due to redirects
-          doc.consume(data) # This also may contain a new URL
-          doc.save!
-          doc
-        else
-          # The document could not be loaded due to errors (404 et al).
-          Rails.logger.error "Tried to load a document for URL #{url}, but failed. (#{fetch.response.code})"
-          nil
+      if fetch.success? && data = fetch.document_data
+        # Abort if URL host has changed unexpectedly. Later on, we'll want to
+        # deal with this in a more graceful manner.
+        if data['url'] && URI(data['url']).host != user.host
+          raise "Retrieved u-url doesn't match expected host #{user.host}."
         end
+
+        # Consume data
+        consume(data)
+
+        self
+      else
+        raise FetchError, "Couldn't fetch document data for #{url}. (#{fetch.response.code})"
       end
     end
   end

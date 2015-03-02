@@ -40,7 +40,9 @@ module Pants
     end
 
     def remote
-      @document = Pants::Document.from_url("http://#{params[:url]}")
+      @document = Pants::Document.for_url("http://#{params[:url]}")
+      @document.fetch!
+      @document.save!
       render :show
     end
 

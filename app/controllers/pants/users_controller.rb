@@ -16,7 +16,7 @@ class Pants::UsersController < ApplicationController
       # User Photo
       format.jpg do
         return render_404 if @user.photo.blank?
-        redirect_to @user.photo.encode('jpg', '-quality 80').url, status: 302
+        redirect_to @user.photo_thumbnail.url, status: 302
       end
     end
   end

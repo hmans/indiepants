@@ -1,5 +1,7 @@
 module Pants
   class User < ActiveRecord::Base
+    include UserFetching
+
     has_secure_password validations: false
 
     store_accessor :data, :custom_css, :photo_uid
@@ -39,12 +41,24 @@ module Pants
     end
 
     def photo_thumbnail
-      photo.try { thumb("200x200#", format: "jpg") }
+      photo.try { thumb("300x300#", format: "jpg") }
+    end
+
+    def merge_with!(user)
+      # TODO: implement. :-)
+      Rails.logger.warn "merge_with called for #{self.host}, but no merging implemented yet."
+      destroy
     end
 
     class << self
       def [](host)
         where(host: host).take
+      end
+
+      def for_url(url)
+        where(host: URI(url).host).first_or_initialize.tap do |user|
+          user.url = url
+        end
       end
     end
   end

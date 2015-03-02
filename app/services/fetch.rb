@@ -1,21 +1,28 @@
 class Fetch
-  attr_reader :url
+  attr_reader :uri, :original_uri
 
   delegate :success?, :not_found?,
     to: :response
 
   def initialize(url)
-    @url = url
+    @uri = @original_uri = URI(url)
+    response
   end
 
-  def uri
-    @uri ||= URI(url)
+  def url
+    uri.to_s
+  end
+
+  def original_url
+    original_uri.to_s
   end
 
   def response
     @response ||= begin
       Rails.logger.info "Fetching #{url}"
-      HTTParty.get(url, timeout: 10.seconds)
+      response = HTTParty.get(uri, timeout: 10.seconds)
+      @uri = response.request.last_uri
+      response
     end
   end
 
@@ -31,53 +38,93 @@ class Fetch
     end
   end
 
-  def data
-    @data ||= begin
-      # Check if we have a URL
-      raise "no URL given" if url.blank?
+  def document_data
+    @document_data ||= begin
+      data = document_data_from_pants_json ||
+        document_data_from_microformats ||
+        document_data_from_magic_extraction
 
-      # Load and parse the page
-      page = nokogiri
-
-      data = data_from_pants_json ||
-        data_from_microformats ||
-        data_from_magic_extraction
-
-      data.with_indifferent_access
+      data.try(:with_indifferent_access)
     rescue StandardError => e
-      Rails.logger.error "Error while fetching #{url}: #{e}"
+      Rails.logger.error "Error while fetching document at #{url}: #{e}"
+      false
+    end
+  end
+
+  def user_data
+    @user_data ||= begin
+      data = user_data_from_pants_json ||
+        user_data_from_microformats ||
+        user_data_from_magic_extraction
+
+      data = data.with_indifferent_access
+
+      # Expand relative URLs
+      %w[url photo_url].each do |key|
+        if data[key].present?
+          data[key] = URI.join(url, data[key]).to_s
+        end
+      end
+
+      data
+    rescue StandardError => e
+      Rails.logger.error "Error while fetching user at #{url}: #{e}"
       false
     end
   end
 
   private
 
-  def data_from_pants_json
-    if link = nokogiri.css("head>link[rel=pants-document]")
-      if pants_json_url = link.first.try(:[], "href")
-        json = HTTParty.get(URI.join(url, pants_json_url))
-        json
+  concerning :DocumentFetching do
+    def document_data_from_pants_json
+      if link = nokogiri.css("head>link[rel=pants-document]")
+        if pants_json_url = link.first.try(:[], "href")
+          Fetch[URI.join(url, pants_json_url)].response
+        end
       end
     end
-  end
 
-  def data_from_microformats
-    if h_entry = nokogiri.at_css('.h-entry')
+    def document_data_from_microformats
+      if h_entry = nokogiri.at_css('.h-entry')
+        {
+          html:  h_entry.at_css('.e-content').try { inner_html.strip },
+          title: h_entry.at_css('.p-name').try { text } || page.at_css('head>title').try { text },
+          published_at:  h_entry.at_css('.dt-published').try { attr('datetime') },
+          uid:   h_entry.at_css('.u-uid').try { attr('href') }
+        }
+      end
+    end
+
+    def document_data_from_magic_extraction
+      # TODO: apply some magic extraction algorithm!
+      # self.html = page.inner_html
       {
-        html:  h_entry.at_css('.e-content').try { inner_html.strip },
-        title: h_entry.at_css('.p-name').try { text } || page.at_css('head>title').try { text },
-        published_at:  h_entry.at_css('.dt-published').try { attr('datetime') },
-        uid:   h_entry.at_css('.u-uid').try { attr('href') }
+        title: nokogiri.at_css('head>title').try { text }
       }
     end
   end
 
-  def data_from_magic_extraction
-    # TODO: apply some magic extraction algorithm!
-    # self.html = page.inner_html
-    {
-      title: nokogiri.at_css('head>title').try { text }
-    }
+  concerning :UserFetching do
+    def user_data_from_pants_json
+      # not implemented -- we may not need it
+    end
+
+    def user_data_from_microformats
+      if h_card = nokogiri.at_css('.h-card')
+        {
+          name:      h_card.at_css('.p-name').try { text },
+          url:       h_card.at_css('.u-url').try { attr('href') },
+          photo_url: h_card.at_css('.u-photo').try { attr('src') || attr('href') }
+        }
+      end
+    end
+
+    def user_data_from_magic_extraction
+      {
+        name: nokogiri.at_css('title').try { text } || uri.host,
+        url:  '/'
+      }
+    end
   end
 
   class << self

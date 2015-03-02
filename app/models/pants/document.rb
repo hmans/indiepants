@@ -38,6 +38,8 @@ class Pants::Document < ActiveRecord::Base
     end
   end
 
+  include DocumentDeduplication
+
   after_create do
     if local? && uid.blank?
       update_columns(uid: URI.join(user.url, "/pants/documents/#{id}").to_s)
@@ -114,9 +116,11 @@ class Pants::Document < ActiveRecord::Base
 
     def url=(v)
       uri = URI(v)
+
       self.path = uri.path
       self.user = Pants::User.where(host: uri.host).first_or_initialize
-      self.user.scheme = uri.scheme
+
+      v
     end
 
     class_methods do
@@ -129,6 +133,10 @@ class Pants::Document < ActiveRecord::Base
         if user = Pants::User.where(host: uri.host).take
           user.documents.find_by_path_or_previous_path(uri.path)
         end
+      end
+
+      def for_url(url)
+        find_by_url(url) || new(url: url)
       end
     end
   end

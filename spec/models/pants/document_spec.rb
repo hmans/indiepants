@@ -28,6 +28,9 @@ describe Pants::Document do
     end
 
     it "creates a new user if required" do
+      stub_request(:get, "http://bar.com/")
+      stub_request(:get, "http://bar.com/bar")
+
       subject.url = "http://bar.com/bar"
       expect(subject.user).to be_new_record
       expect(subject.user.host).to eq("bar.com")
