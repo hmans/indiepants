@@ -194,6 +194,7 @@ form .hint {
   @extend %smally;
 }
 
+
 // PRIMARY HEADER
 
 header[role="primary"] {
@@ -212,6 +213,14 @@ header[role="primary"] {
   }
 }
 
+
+// PRIMARY FOOTER
+
+footer[role="primary"] {
+  @extend %smally;
+  border-top: 1px dotted $light-color;
+  margin: 80px 0 20px 0;
+}
 
 // PRIMARY NAVIGATION
 

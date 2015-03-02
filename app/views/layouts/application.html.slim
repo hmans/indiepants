@@ -37,6 +37,9 @@ html
               - else
                 li = link_to "Login", :pants_login
 
-      section#content
+      section#content role="main"
         = render "flashes"
         = yield
+
+      footer role="primary"
+        p The Web is Pants.
