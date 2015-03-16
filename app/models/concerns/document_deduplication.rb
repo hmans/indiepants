@@ -1,6 +1,6 @@
 concern :DocumentDeduplication do
   included do
-    before_validation(on: [:create, :update]) do
+    before_save do
       if duplicates.any?
         merge_duplicates!
       end
@@ -22,6 +22,21 @@ concern :DocumentDeduplication do
 
   def duplicates
     Rails.logger.debug "Looking for duplicates of #{url}"
-    user.documents.where("uid = ? or path = ?", uid, path).where("id != ?", id)
+
+    # TODO: refactor the following using ActiveRecord's upcoming .or() invocation
+    scope = user.documents
+    if uid.present? && path.present?
+      scope = scope.where("uid = ? or path = ?", uid, path)
+    elsif uid.present?
+      scope = scope.where(uid: uid)
+    elsif path.present?
+      scope = scope.where(path: path)
+    end
+
+    if persisted?
+      scope = scope.where("id != ?", id)
+    end
+
+    scope
   end
 end
