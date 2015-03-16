@@ -1,7 +1,7 @@
 concern :DocumentDeduplication do
   included do
     before_save do
-      if duplicates.any?
+      if remote? && duplicates.any?
         merge_duplicates!
       end
     end
@@ -14,6 +14,8 @@ concern :DocumentDeduplication do
 
   # Find all duplicates and merge them into this document.
   def merge_duplicates!
+    raise "deduplication should never run for local documents" if local?
+
     Rails.logger.info "Merging duplicates of #{url}"
     duplicates.each do |dupe|
       dupe.merge_with!(self)
