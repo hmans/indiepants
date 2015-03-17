@@ -1,4 +1,6 @@
 language: ruby
+rvm:
+  - 2.2.1
 bundler_args: --without production
 addons:
   postgresql: "9.4"
