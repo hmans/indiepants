@@ -3,7 +3,7 @@
 - if (likes = links.rel("like")).any?
   p.document-likes
     ' <strong>#{pluralize likes.count, "Like", "Likes"}</strong> from
-    ' #{likes.map { |like| link_to like.source.user.host, like.source.url }.to_sentence}
+    ' #{likes.map { |like| link_to like.source.user.host, like.source.url }.to_sentence.html_safe}
 
 - if (replies = links.rel("reply")).any?
   h2 Replies
