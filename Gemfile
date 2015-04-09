@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 # Core
 ruby '2.2.1'
-gem 'rails', github: 'rails/rails', branch: '4-2-1'
+gem 'rails', '4.2.1'
 gem 'pg'
 gem 'bcrypt', '~> 3.1.7'
 gem 'puma'
