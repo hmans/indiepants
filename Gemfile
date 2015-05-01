@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Core
-ruby '2.2.1'
+ruby '2.2.2'
 gem 'rails', '4.2.1'
 gem 'pg'
 gem 'bcrypt', '~> 3.1.7'
