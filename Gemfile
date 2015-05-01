@@ -10,8 +10,8 @@ gem 'puma'
 gem 'responders'
 
 # Frontend
-gem 'sass-rails', '~> 5.0'
-gem 'compass-rails'
+gem 'sass-rails', '5.0.1'
+gem 'compass-rails', '~> 2.0.4'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 gem 'slim-rails'
