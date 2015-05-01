@@ -1,7 +1,4 @@
 @import url(//fonts.googleapis.com/css?family=Roboto:400,700,400italic,700italic,300);
-
-@import "compass";
-@import "compass/reset";
 @import "font-awesome";
 
 // CONFIGURATION
@@ -32,9 +29,9 @@ $extra-color: #f93;
 }
 
 %rollup {
-  @include border-radius(10px 0);
-  @include transition(border-radius 100ms ease-out);
-  &:hover { @include border-radius(0); }
+  border-radius: 10px 0;
+  transition: border-radius 100ms ease-out;
+  &:hover { border-radius: 0; }
 }
 
 // PROTOTYPES
@@ -59,10 +56,10 @@ $extra-color: #f93;
 
 // BASICS
 
-* { @include box-sizing(inherit); }
+* { box-sizing: inherit; }
 
 html, body {
-  @include box-sizing(border-box);
+  box-sizing: border-box;
   height: 100%;
 }
 
@@ -227,6 +224,10 @@ footer[role="primary"] {
 nav[role="primary"] {
   @extend %fatso;
   margin-bottom: 2em;
+
+  ul {
+    padding: 0;
+  }
 
   li {
     display: inline-block;
