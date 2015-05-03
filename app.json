@@ -5,8 +5,7 @@
   "website": "https://github.com/hmans/indiepants",
   "keywords": ["rails", "blogging", "social"],
   "addons": [
-    "heroku-postgresql",
-    "mandrill"
+    "heroku-postgresql"
   ],
   "scripts": {
     "postdeploy": "bin/rake db:migrate"
