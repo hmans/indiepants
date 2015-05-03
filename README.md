@@ -30,10 +30,10 @@ For hosting your own instance of IndiePants using [Docker](https://www.docker.co
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
-**Note:** this is currently **broken**, since Heroku will only provision PostgreSQL 9.3
-(while this app requires PostgreSQL 9.4.) It's possible to migrate your Heroku app to
-PosgreSQL 9.4 manually, but that's not good enough. The button will start working again
-once Heroku moves PostgreSQL 9.4 to GA status.
+If you want to give IndiePants a spin, clicking this button will set up a copy on the
+free Heroku tier. Heroku will let you sign up for free and only ask you for credit
+card details once you either upgrade to the paid tier, or start using Heroku addons
+(which are not required for IndiePants to function.)
 
 ### Configuration
 
