@@ -55,6 +55,7 @@ class Fetch
     @user_data ||= begin
       data = user_data_from_pants_json ||
         user_data_from_microformats ||
+        user_data_from_json_ld ||
         user_data_from_magic_extraction
 
       data = data.with_indifferent_access
@@ -116,6 +117,24 @@ class Fetch
           url:       h_card.at_css('.u-url').try { attr('href') },
           photo_url: h_card.at_css('.u-photo').try { attr('src') || attr('href') }
         }
+      end
+    end
+
+    def user_data_from_json_ld
+      # It's pretty simple at the moment, for example there are no checks for
+      # the right JSON schema.  It works and as long as we don't encounter any
+      # issues with this "dumb" solution adding more structural checks just
+      # feels like preparing for hypothetical situations.
+      if json_string = nokogiri.at_css('script[type="application/ld+json"]').try { text }
+        json_ld = JSON.parse(json_string)
+
+        if author = json_ld['author']
+          {
+            name: author['name'],
+            url: author['url'],
+            photo_url: author['image']
+          }
+        end
       end
     end
 

@@ -109,6 +109,38 @@ describe Fetch do
       end
     end
 
+    context "when the remote document has an `application/json+ld` script tag" do
+      let(:html_body) do
+        <<-EOS
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Mr. Awesome</title>
+            <script type="application/ld+json">
+              {
+                "author": {
+                  "@type": "Person",
+                  "name": "Mr. Awesome",
+                  "image": "http://www.awesome.com/photo.png",
+                  "url": "http://www.awesome.com/"
+                }
+              }
+            </script>
+          </head>
+          <body>
+            I'm Mr. Awesome.
+          </body>
+        </html>
+        EOS
+      end
+
+      it "fetches the document from JSON-LD block" do
+        expect(data['url']).to eq("http://www.awesome.com/")
+        expect(data['name']).to eq("Mr. Awesome")
+        expect(data['photo_url']).to eq("http://www.awesome.com/photo.png")
+      end
+    end
+
     context "when the remote document is simple HTML" do
       let(:html_body) do
         <<-EOS
